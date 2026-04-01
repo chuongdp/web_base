@@ -1,0 +1,30 @@
+# 1. Project Context
+- Name: Base E-commerce Cloneable Template
+- Description: Một template web bán hàng tích hợp sẵn CMS (Admin Panel) dùng để clone và deploy hàng loạt. 
+- Goal: Hệ thống phải cực kỳ dễ cấu hình, dễ thay đổi giao diện, hình ảnh, nội dung từ CMS. Dễ dàng đóng gói và deploy lên VPS (Vultr) mà không cần setup database phức tạp.
+
+# 2. Tech Stack & Architecture
+- Core: Next.js (App Router), React, TypeScript.
+- Styling: Tailwind CSS, Shadcn UI (cho các component Admin).
+- Database: SQLite + Prisma ORM (Để dễ dàng mang đi clone không cần setup DB server).
+- Authentication: NextAuth.js (Cho phần đăng nhập quản trị CMS).
+- Storage: Lưu ảnh local (thư mục public/uploads) để dễ backup, hoặc cấu hình S3 qua env.
+- Deployment: Docker & Docker Compose.
+
+# 3. AI Assistant Rules (Token Saving & Efficiency)
+- TRẢ LỜI NGẮN GỌN. Không giải thích dài dòng. Không dùng từ ngữ khách sáo.
+- Chỉ in ra các đoạn code cần cập nhật/thêm mới. KHÔNG in lại toàn bộ file nếu không yêu cầu.
+- Luôn kiểm tra các file hiện có bằng công cụ tìm kiếm trước khi đề xuất tạo file/component mới.
+- Khi tạo tính năng mới, hãy cung cấp 1 danh sách checklist ngắn gọn (1-2 câu) về các bước sẽ làm để tôi duyệt trước khi viết code.
+
+# 4. Coding Standards for "Cloneability"
+- Cấu hình tập trung: Mọi thông tin dễ thay đổi (Tên web, Logo URL, Màu sắc chủ đạo, SĐT liên hệ) phải được quản lý qua Database (bảng Settings) để CMS có thể đổi được, hoặc gom vào 1 file `site-config.ts` duy nhất.
+- Dynamic Data: Dữ liệu sản phẩm, bài viết, banner phải được load động từ SQLite.
+- File Upload: Các hàm upload ảnh trong CMS phải được viết gọn gàng, trả về URL tương đối để lưu vào DB.
+- Component Design: Tách biệt hoàn toàn UI của Storefront (giao diện khách) và CMS (giao diện admin).
+  + Storefront components: `src/components/storefront/`
+  + Admin components: `src/components/admin/`
+
+# 5. Deployment Focus
+- Code sinh ra phải tương thích tốt với môi trường Docker Node.js alpine.
+- Không sử dụng các package có bindings Native phức tạp gây lỗi khi build Docker.

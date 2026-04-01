@@ -1,0 +1,11 @@
+# Thêm block mới — KHÔNG sửa/xóa các site đang chạy (n8n, HRM, …).
+# Caddy: https://caddyserver.com/docs/install
+# web_base nên dùng HOST_BIND=127.0.0.1 + HOST_PORT (vd: 3040) rồi proxy tới đúng port đó.
+
+shop1.example.com, www.shop1.example.com {
+	reverse_proxy 127.0.0.1:3040
+}
+
+# shop2.example.com {
+#	reverse_proxy 127.0.0.1:3041
+# }

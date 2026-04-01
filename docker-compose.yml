@@ -1,0 +1,28 @@
+# Tên project Compose — volume/network tách biệt với n8n, HRM, … (mỗi site web_base: đặt khác nhau).
+name: ${COMPOSE_PROJECT_NAME:-web_base}
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      # HOST_BIND=127.0.0.1: chỉ lắng nghe localhost — an toàn khi đã có reverse proxy (Caddy/Nginx) trên VPS.
+      # HOST_PORT: chọn port chưa dùng (ss -tlnp). Không dùng 80/443 ở đây trừ khi bạn biết rõ.
+      - "${HOST_BIND:-0.0.0.0}:${HOST_PORT:-3000}:3000"
+    environment:
+      DATABASE_URL: file:/data/app.db
+      AUTH_SECRET: ${AUTH_SECRET}
+      AUTH_URL: ${AUTH_URL:-http://localhost:3000}
+    volumes:
+      - sqlite_data:/data
+    restart: unless-stopped
+
+volumes:
+  sqlite_data:
+
+# Một lệnh: docker compose up -d --build
+# Dữ liệu SQLite nằm trong volume (tên thực tế: ${COMPOSE_PROJECT_NAME}_sqlite_data).
+# Muốn backup/copy DB ra host: đổi `volumes` thành bind mount, ví dụ:
+#   volumes:
+#     - ./data:/data

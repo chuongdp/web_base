@@ -1,0 +1,223 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+/// Tài khoản quản trị CMS
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  name         String?
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+/// Visual/layout preset for storefront collection tiles & listing (always linked internally — no external URL).
+enum CollectionDisplayPreset {
+  default
+  clothing
+  drinkware
+  household
+}
+
+/// Singleton (id = 1): global defaults for collection tiles & category listings.
+model CollectionConfig {
+  id                   Int                     @id @default(1)
+  defaultDisplayPreset CollectionDisplayPreset @default(default) @map("default_display_preset")
+  /// URL ảnh nền/thumb mặc định cho thẻ danh mục trang chủ (khi danh mục không gán riêng).
+  defaultTileImageUrl  String?                 @map("default_tile_image_url")
+  homeSectionHeading   String?                 @map("home_section_heading")
+  updatedAt            DateTime                @updatedAt @map("updated_at")
+
+  @@map("collection_config")
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String?
+  /// Null = inherit `CollectionConfig.defaultDisplayPreset`.
+  displayPreset CollectionDisplayPreset? @map("display_preset")
+  /// URL ảnh thumb/nền thẻ danh mục trang chủ; null = kế thừa `CollectionConfig.defaultTileImageUrl`.
+  tileImageUrl String? @map("tile_image_url")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  products    Product[]
+
+  @@map("categories")
+}
+
+/// Bộ sưu tập (curated): gán sản phẩm qua quan hệ nhiều-nhiều.
+model ProductCollection {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String?
+  sortOrder   Int       @default(0) @map("sort_order")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  products    Product[]
+
+  @@map("product_collections")
+}
+
+enum Currency {
+  VND
+  USD
+}
+
+/// Preset giao diện storefront (màu chủ đạo vẫn dùng từ SiteSetting).
+enum StorefrontTheme {
+  minimal
+  boutique
+  editorial
+  modern
+  warm
+  luxury
+  industrial
+  playful
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  materials           String?
+  careInstructions    String? @map("care_instructions")
+  shippingDetails     String? @map("shipping_details")
+  /** Comma-separated size labels (SQLite has no String[]). */
+  sizes       String?
+  price       Decimal
+  currency    Currency @default(USD)
+  categoryId  String   @map("category_id")
+  category    Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  productCollections ProductCollection[]
+  images      Image[]
+  sizeStocks  ProductSizeStock[]
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@index([categoryId])
+  @@map("products")
+}
+
+/// Inventory per size variant. `sizeLabel` "" = single-size product (no sizes list).
+model ProductSizeStock {
+  id         String   @id @default(cuid())
+  productId  String   @map("product_id")
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  sizeLabel  String   @map("size_label")
+  quantity   Int      @default(0)
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  @@unique([productId, sizeLabel])
+  @@map("product_size_stocks")
+}
+
+model Image {
+  id        String  @id @default(cuid())
+  url       String
+  sortOrder Int     @default(0) @map("sort_order")
+  productId String  @map("product_id")
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@map("images")
+}
+
+/// Đơn hàng (thanh toán COD / PayPal / thẻ / CK — xác nhận thủ công)
+model Order {
+  id             String      @id @default(cuid())
+  orderNumber    String      @unique @map("order_number")
+  currency       Currency
+  status         String      @default("pending")
+  customerName   String      @map("customer_name")
+  email          String
+  phone          String?
+  address        String?
+  note           String?
+  subtotal       Decimal     @default(0) @map("subtotal")
+  shippingFee    Decimal     @default(0) @map("shipping_fee")
+  paymentMethod  String      @default("cod") @map("payment_method")
+  total          Decimal
+  createdAt      DateTime    @default(now()) @map("created_at")
+  updatedAt      DateTime    @updatedAt @map("updated_at")
+  items          OrderItem[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id          String  @id @default(cuid())
+  orderId     String  @map("order_id")
+  order       Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId   String  @map("product_id")
+  productName String  @map("product_name")
+  /** Empty string when product has no size variants. */
+  sizeLabel   String  @default("") @map("size_label")
+  unitPrice   Decimal @map("unit_price")
+  quantity    Int
+  lineTotal   Decimal @map("line_total")
+
+  @@index([orderId])
+  @@map("order_items")
+}
+
+/// Cấu hình giao diện / thương hiệu (singleton: thường chỉ 1 bản ghi id = 1)
+model SiteSetting {
+  id               Int      @id @default(1)
+  siteName         String   @map("site_name")
+  logoUrl          String?  @map("logo_url")
+  primaryColor     String?  @map("primary_color")
+  bannerText       String?  @map("banner_text")
+  /// Tiền tệ mặc định cho sản phẩm mới / hiển thị cửa hàng
+  defaultCurrency  Currency @default(USD) @map("default_currency")
+  /// Preset bố cục / typography / bo góc storefront.
+  storefrontTheme  StorefrontTheme @default(boutique) @map("storefront_theme")
+  heroTitle            String? @map("hero_title")
+  heroSubtitle         String? @map("hero_subtitle")
+  heroButtonText       String? @map("hero_button_text")
+  heroButtonLink       String? @map("hero_button_link")
+  heroImageUrl         String? @map("hero_image_url")
+  heroOverlayImageUrl  String? @map("hero_overlay_image_url")
+
+  aboutHeroTitle          String? @map("about_hero_title")
+  aboutWhoTitle           String? @map("about_who_title")
+  aboutIntroP1            String? @map("about_intro_p1")
+  aboutIntroP2            String? @map("about_intro_p2")
+  aboutBlock1Title        String? @map("about_block1_title")
+  aboutBlock1Body         String? @map("about_block1_body")
+  aboutBlock1ImageUrl     String? @map("about_block1_image_url")
+  aboutBlock2Title        String? @map("about_block2_title")
+  aboutBlock2Body         String? @map("about_block2_body")
+  aboutBlock2ImageUrl     String? @map("about_block2_image_url")
+  aboutBlock3Title        String? @map("about_block3_title")
+  aboutBlock3Body         String? @map("about_block3_body")
+  aboutBlock3ImageUrl     String? @map("about_block3_image_url")
+  aboutBestSellersTitle   String? @map("about_best_sellers_title")
+  galleryHeading          String? @map("gallery_heading")
+  gallerySubtitle         String? @map("gallery_subtitle")
+
+  contactPageTitle  String? @map("contact_page_title")
+  contactIntro      String? @map("contact_intro")
+  contactEmail      String? @map("contact_email")
+  contactPhone      String? @map("contact_phone")
+  contactAddress    String? @map("contact_address")
+  /** URL iframe Google Maps (Chia sẻ → Nhúng bản đồ → copy src). */
+  contactMapEmbedUrl String? @map("contact_map_embed_url")
+
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  @@map("site_settings")
+}
