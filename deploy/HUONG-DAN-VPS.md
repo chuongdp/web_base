@@ -1,6 +1,6 @@
 # Triển khai web_base lên VPS (từ đầu)
 
-**→ Bản đi từng bước cho một domain cụ thể** (`vegamitchellcourte.shop`, root, tar+scp, Caddy, Docker): xem **[HUONG-DAN-TU-DAU-DOMAIN-MAU.md](./HUONG-DAN-TU-DAU-DOMAIN-MAU.md)**.
+**→ Bản đi từng bước cho một domain cụ thể** (`vegamitchellcourte.shop`, **Git clone trên VPS**, Nginx, Docker): xem **[HUONG-DAN-TU-DAU-DOMAIN-MAU.md](./HUONG-DAN-TU-DAU-DOMAIN-MAU.md)**.
 
 ---
 

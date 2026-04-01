@@ -13,6 +13,9 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN npx prisma generate
+# next build prerender các trang gọi Prisma — cần DB tạm (không dùng volume runtime).
+ENV DATABASE_URL="file:/tmp/build.db"
+RUN npx prisma migrate deploy
 RUN npm run build
 
 FROM base AS runner
