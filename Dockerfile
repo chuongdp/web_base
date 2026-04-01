@@ -39,9 +39,10 @@ COPY --from=builder /app/.next/static ./.next/static
 
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
-# CLI `db push` cần đủ gói @prisma/* (debug, fetch-engine, …) — copy cả scope
-COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
-COPY --from=builder /app/node_modules/prisma ./node_modules/prisma
+# CLI db push: cài prisma đầy đủ (effect, c12, …) — copy tay thiếu transitive deps
+RUN mkdir -p /opt/prisma-cli && cd /opt/prisma-cli && \
+  printf '%s\n' '{"name":"prisma-cli","private":true}' > package.json && \
+  npm install prisma@6.19.2 --omit=dev --no-audit --no-fund
 
 COPY docker-entrypoint.sh /app/docker-entrypoint.sh
 RUN chmod +x /app/docker-entrypoint.sh
