@@ -11,6 +11,8 @@ RUN npm ci
 FROM base AS builder
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+# Next.js / COPY runner cần thư mục public (có thể rỗng)
+RUN mkdir -p public
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN npx prisma generate
 # next build prerender các trang gọi Prisma — cần DB tạm. Dùng db push để khớp schema.prisma
