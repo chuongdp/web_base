@@ -65,19 +65,36 @@ export function HeaderLogo({
     ? { width: `${w}px`, height: `${h}px` }
     : undefined;
 
+  /** File trong /public (vd /uploads/...) — dùng <img> để tránh lỗi next/image trên standalone/VPS. */
+  const isLocalPublicPath = logoUrl != null && logoUrl.startsWith("/") && !logoUrl.startsWith("//");
+
   return (
     <Link href="/" className={`flex shrink-0 items-center gap-2 ${className}`}>
       {logoUrl ? (
-        <div className={`relative ${useCustom ? "" : "h-9 w-32 sm:h-10 sm:w-36"}`} style={boxStyle}>
-          <Image
-            src={logoUrl}
-            alt={siteName}
-            fill
-            className="object-contain object-left"
-            sizes={w ? `${w}px` : "144px"}
-            unoptimized={logoUrl.startsWith("/")}
-          />
-        </div>
+        isLocalPublicPath ? (
+          <div
+            className={`flex shrink-0 items-center justify-start overflow-hidden ${useCustom ? "" : "h-9 max-w-[9rem] sm:h-10 sm:max-w-[10rem]"}`}
+            style={boxStyle}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={logoUrl}
+              alt={siteName}
+              className="max-h-full w-auto max-w-full object-contain object-left"
+              decoding="async"
+            />
+          </div>
+        ) : (
+          <div className={`relative ${useCustom ? "" : "h-9 w-32 sm:h-10 sm:w-36"}`} style={boxStyle}>
+            <Image
+              src={logoUrl}
+              alt={siteName}
+              fill
+              className="object-contain object-left"
+              sizes={w ? `${w}px` : "144px"}
+            />
+          </div>
+        )
       ) : (
         <span
           className="max-w-[10rem] truncate font-serif text-lg font-semibold tracking-tight sm:max-w-xs sm:text-xl"
