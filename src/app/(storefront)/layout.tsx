@@ -20,6 +20,12 @@ export default async function StorefrontLayout({ children }: { children: ReactNo
     }),
   ]);
   const primary = s.primaryColor;
+  const footerMeta = {
+    shopOwner: s.footerMetaShopOwner?.trim() || s.siteName,
+    address: s.footerMetaAddress?.trim() || s.contactAddress?.trim() || "—",
+    email: s.footerMetaEmail?.trim() || s.contactEmail?.trim() || "—",
+    hours: s.footerMetaHours?.trim() || "—",
+  };
 
   return (
     <div
@@ -54,7 +60,7 @@ export default async function StorefrontLayout({ children }: { children: ReactNo
 
       <main className={`sf-main mx-auto w-full min-w-0 flex-1 ${getMainShellClass(s.storefrontTheme)}`}>{children}</main>
 
-      <StorefrontFooter siteName={s.siteName} theme={s.storefrontTheme} />
+      <StorefrontFooter siteName={s.siteName} theme={s.storefrontTheme} footerMeta={footerMeta} />
     </div>
   );
 }

@@ -124,6 +124,11 @@ export async function updateSiteSetting(formData: FormData): Promise<UpdateSiteS
   const contactAddress = optStr(formData, "contactAddress");
   const contactMapEmbedUrl = optStr(formData, "contactMapEmbedUrl");
 
+  const footerMetaShopOwner = optStr(formData, "footerMetaShopOwner");
+  const footerMetaAddress = optStr(formData, "footerMetaAddress");
+  const footerMetaEmail = optStr(formData, "footerMetaEmail");
+  const footerMetaHours = optStr(formData, "footerMetaHours");
+
   if (!siteName) {
     return { ok: false, message: "Site name is required." };
   }
@@ -240,6 +245,10 @@ export async function updateSiteSetting(formData: FormData): Promise<UpdateSiteS
       contactPhone,
       contactAddress,
       contactMapEmbedUrl,
+      footerMetaShopOwner,
+      footerMetaAddress,
+      footerMetaEmail,
+      footerMetaHours,
     },
     update: {
       siteName,
@@ -289,6 +298,10 @@ export async function updateSiteSetting(formData: FormData): Promise<UpdateSiteS
       contactPhone,
       contactAddress,
       contactMapEmbedUrl,
+      footerMetaShopOwner,
+      footerMetaAddress,
+      footerMetaEmail,
+      footerMetaHours,
     },
   });
 

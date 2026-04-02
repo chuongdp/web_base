@@ -12,7 +12,8 @@ type Props = {
 };
 
 /**
- * Banner chạy ngang; khi prefers-reduced-motion thì một dòng tĩnh căn giữa.
+ * Banner chạy ngang full viewport: mỗi bản sao tối thiểu 100vw để vòng lặp không bị “cục” nhỏ bên trái.
+ * prefers-reduced-motion: một dòng tĩnh căn giữa.
  */
 export function StorefrontBannerMarquee({
   text,
@@ -42,14 +43,21 @@ export function StorefrontBannerMarquee({
       aria-label="Thông báo"
     >
       <p className="sr-only">{text}</p>
-      <div
-        className="sf-banner-track flex w-max motion-reduce:mx-auto motion-reduce:animate-none"
-        style={trackStyle}
-      >
-        <span className="inline-block shrink-0 whitespace-nowrap px-8">{text}</span>
-        <span className="inline-block shrink-0 whitespace-nowrap px-8 motion-reduce:hidden" aria-hidden="true">
-          {text}
-        </span>
+
+      <p className="hidden px-4 text-center motion-reduce:block">{text}</p>
+
+      <div className="w-full overflow-hidden motion-reduce:hidden">
+        <div className="sf-banner-track flex w-max" style={trackStyle}>
+          <span className="inline-flex min-w-[100vw] shrink-0 items-center justify-center whitespace-nowrap px-8">
+            {text}
+          </span>
+          <span
+            className="inline-flex min-w-[100vw] shrink-0 items-center justify-center whitespace-nowrap px-8"
+            aria-hidden="true"
+          >
+            {text}
+          </span>
+        </div>
       </div>
     </div>
   );

@@ -7,7 +7,7 @@ const GALLERY: readonly { src: string; alt: string }[] = [
     alt: "White tee — fabric and fit",
   },
   {
-    src: "https://images.unsplash.com/photo-1562157873-818bc6e292ba?w=900&q=85&auto=format&fit=crop",
+    src: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=900&q=85&auto=format&fit=crop",
     alt: "Hanging shirts — color and collection",
   },
   {
@@ -15,7 +15,7 @@ const GALLERY: readonly { src: string; alt: string }[] = [
     alt: "Personal style",
   },
   {
-    src: "https://images.unsplash.com/photo-1503341457503-b0a8f4c2a093?w=900&q=85&auto=format&fit=crop",
+    src: "https://images.unsplash.com/photo-1445205170230-053b83016050?w=900&q=85&auto=format&fit=crop",
     alt: "Street style",
   },
   {

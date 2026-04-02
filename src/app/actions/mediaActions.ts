@@ -46,7 +46,7 @@ export async function uploadMediaAction(formData: FormData): Promise<UploadMedia
 
   const mime = file.type || "application/octet-stream";
   if (!isAllowedImageMime(mime)) {
-    return { ok: false, message: "Chỉ chấp nhận JPEG, PNG, GIF, WebP, SVG." };
+    return { ok: false, message: "Chỉ chấp nhận JPEG, PNG, GIF, WebP, SVG, ICO." };
   }
   if (!extensionForMime(mime)) {
     return { ok: false, message: "Định dạng ảnh không hợp lệ." };
@@ -65,6 +65,7 @@ export async function uploadMediaAction(formData: FormData): Promise<UploadMedia
   });
 
   revalidatePath("/admin/media");
+  revalidatePath("/admin/settings");
   return { ok: true, url: publicUrl };
 }
 

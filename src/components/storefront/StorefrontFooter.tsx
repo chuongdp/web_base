@@ -2,62 +2,94 @@ import type { StorefrontTheme } from "@prisma/client";
 import Link from "next/link";
 import { getFooterLayoutMode } from "@/lib/storefront-theme";
 
-type Props = { siteName: string; theme: StorefrontTheme };
+export type FooterMetaStrip = {
+  shopOwner: string;
+  address: string;
+  email: string;
+  hours: string;
+};
+
+type Props = { siteName: string; theme: StorefrontTheme; footerMeta: FooterMetaStrip };
 
 function ShopLinks() {
+  const link = "transition hover:text-zinc-900";
   return (
     <ul className="space-y-2.5 text-sm text-zinc-700">
       <li>
-        <Link href="/" className="hover:text-zinc-900">
+        <Link href="/" className={link}>
           Home
         </Link>
       </li>
       <li>
-        <span className="text-zinc-400">About Us</span>
+        <Link href="/about-us" className={link}>
+          About Us
+        </Link>
       </li>
       <li>
-        <span className="text-zinc-400">Contact</span>
+        <Link href="/contact" className={link}>
+          Contact
+        </Link>
       </li>
       <li>
-        <span className="text-zinc-400">FAQs</span>
+        <Link href="/faqs" className={link}>
+          FAQs
+        </Link>
       </li>
       <li>
-        <span className="text-zinc-400">Return &amp; Refund</span>
+        <Link href="/return-refund" className={link}>
+          Return &amp; Refund
+        </Link>
       </li>
     </ul>
   );
 }
 
 function LegalLinks() {
+  const link = "transition hover:text-zinc-900";
   return (
     <ul className="space-y-2.5 text-sm text-zinc-700">
       <li>
-        <span className="text-zinc-400">Privacy Policy</span>
+        <Link href="/privacy-policy" className={link}>
+          Privacy Policy
+        </Link>
       </li>
       <li>
-        <span className="text-zinc-400">Disclaimer</span>
+        <Link href="/disclaimer" className={link}>
+          Disclaimer
+        </Link>
       </li>
       <li>
-        <span className="text-zinc-400">Cookie Policy</span>
+        <Link href="/cookie-policy" className={link}>
+          Cookie Policy
+        </Link>
       </li>
       <li>
-        <span className="text-zinc-400">Terms</span>
+        <Link href="/terms" className={link}>
+          Terms
+        </Link>
       </li>
     </ul>
   );
 }
 
 function SupportLinks() {
+  const link = "transition hover:text-zinc-900";
   return (
     <ul className="space-y-2.5 text-sm text-zinc-700">
       <li>
-        <span className="text-zinc-400">Payment Method</span>
+        <Link href="/payment-methods" className={link}>
+          Payment Method
+        </Link>
       </li>
       <li>
-        <span className="text-zinc-400">Order Tracking</span>
+        <Link href="/order-tracking" className={link}>
+          Order Tracking
+        </Link>
       </li>
       <li>
-        <span className="text-zinc-400">Shipping</span>
+        <Link href="/shipping" className={link}>
+          Shipping
+        </Link>
       </li>
     </ul>
   );
@@ -94,25 +126,25 @@ function NewsletterBlock({ siteName }: { siteName: string }) {
   );
 }
 
-function FooterMetaGrid({ siteName }: { siteName: string }) {
+function FooterMetaGrid({ meta }: { meta: FooterMetaStrip }) {
   return (
     <div className="mt-8 rounded-3xl bg-white p-8 shadow-sm ring-1 ring-zinc-100">
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        <div>
+      <div className="grid min-w-0 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="min-w-0">
           <p className="text-[10px] font-semibold uppercase tracking-wider text-zinc-500">Shop owner</p>
-          <p className="mt-1 text-sm font-semibold text-zinc-900">Demo Store</p>
+          <p className="mt-1 text-sm font-semibold text-zinc-900">{meta.shopOwner}</p>
         </div>
-        <div>
+        <div className="min-w-0">
           <p className="text-[10px] font-semibold uppercase tracking-wider text-zinc-500">Address</p>
-          <p className="mt-1 text-sm text-zinc-800">Vietnam</p>
+          <p className="mt-1 break-words text-sm text-zinc-800">{meta.address}</p>
         </div>
-        <div>
+        <div className="min-w-0">
           <p className="text-[10px] font-semibold uppercase tracking-wider text-zinc-500">Email</p>
-          <p className="mt-1 text-sm text-zinc-800">support@{siteName.toLowerCase().replace(/\s+/g, "")}.local</p>
+          <p className="mt-1 break-all text-sm text-zinc-800">{meta.email}</p>
         </div>
-        <div>
+        <div className="min-w-0">
           <p className="text-[10px] font-semibold uppercase tracking-wider text-zinc-500">Hours</p>
-          <p className="mt-1 text-sm text-zinc-800">Mon–Fri | 8:00 – 17:00</p>
+          <p className="mt-1 break-words text-sm text-zinc-800">{meta.hours}</p>
         </div>
       </div>
     </div>
@@ -134,7 +166,7 @@ function PaymentBadges() {
   );
 }
 
-function FooterCards({ siteName, year }: { siteName: string; year: number }) {
+function FooterCards({ siteName, year, footerMeta }: { siteName: string; year: number; footerMeta: FooterMetaStrip }) {
   return (
     <>
       <div className="grid gap-6 lg:grid-cols-3 lg:gap-8">
@@ -164,7 +196,7 @@ function FooterCards({ siteName, year }: { siteName: string; year: number }) {
         </div>
       </div>
 
-      <FooterMetaGrid siteName={siteName} />
+      <FooterMetaGrid meta={footerMeta} />
 
       <div className="mt-8 flex flex-col items-center justify-between gap-4 border-t border-zinc-200 pt-8 sm:flex-row">
         <p className="text-center text-[11px] font-medium uppercase tracking-wide text-zinc-500">
@@ -234,16 +266,34 @@ function FooterMagazine({ siteName, year }: { siteName: string; year: number }) 
 }
 
 function FooterMinimal({ siteName, year }: { siteName: string; year: number }) {
+  const link = "transition hover:text-zinc-900";
   return (
     <div className="flex flex-col items-center gap-6 py-4">
       <nav aria-label="Footer" className="flex flex-wrap justify-center gap-x-8 gap-y-3 text-sm text-zinc-700">
-        <Link href="/" className="hover:text-zinc-900">
+        <Link href="/" className={link}>
           Home
         </Link>
-        <span className="text-zinc-400">About</span>
-        <span className="text-zinc-400">Contact</span>
-        <span className="text-zinc-400">Shipping</span>
-        <span className="text-zinc-400">Privacy</span>
+        <Link href="/shop" className={link}>
+          Shop
+        </Link>
+        <Link href="/about-us" className={link}>
+          About
+        </Link>
+        <Link href="/contact" className={link}>
+          Contact
+        </Link>
+        <Link href="/faqs" className={link}>
+          FAQs
+        </Link>
+        <Link href="/shipping" className={link}>
+          Shipping
+        </Link>
+        <Link href="/return-refund" className={link}>
+          Returns
+        </Link>
+        <Link href="/privacy-policy" className={link}>
+          Privacy
+        </Link>
       </nav>
       <p className="text-center text-xs text-zinc-500">
         © {year} {siteName}
@@ -253,16 +303,26 @@ function FooterMinimal({ siteName, year }: { siteName: string; year: number }) {
 }
 
 function FooterStrip({ siteName, year }: { siteName: string; year: number }) {
+  const link = "transition hover:text-zinc-900";
   return (
     <div className="flex flex-col gap-6 py-6 lg:flex-row lg:items-center lg:justify-between">
       <p className="text-sm font-semibold tracking-tight text-zinc-900">{siteName}</p>
       <nav className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-zinc-600">
-        <Link href="/" className="hover:text-zinc-900">
+        <Link href="/" className={link}>
           Home
         </Link>
-        <span className="text-zinc-400">Catalog</span>
-        <span className="text-zinc-400">Support</span>
-        <span className="text-zinc-400">Legal</span>
+        <Link href="/shop" className={link}>
+          Catalog
+        </Link>
+        <Link href="/contact" className={link}>
+          Support
+        </Link>
+        <Link href="/faqs" className={link}>
+          FAQs
+        </Link>
+        <Link href="/privacy-policy" className={link}>
+          Legal
+        </Link>
       </nav>
       <div className="flex flex-wrap items-center gap-4 lg:justify-end">
         <p className="text-xs text-zinc-500">© {year}</p>
@@ -272,7 +332,7 @@ function FooterStrip({ siteName, year }: { siteName: string; year: number }) {
   );
 }
 
-export function StorefrontFooter({ siteName, theme }: Props) {
+export function StorefrontFooter({ siteName, theme, footerMeta }: Props) {
   const year = new Date().getFullYear();
   const mode = getFooterLayoutMode(theme);
 
@@ -288,7 +348,7 @@ export function StorefrontFooter({ siteName, theme }: Props) {
         {mode === "magazine" ? <FooterMagazine siteName={siteName} year={year} /> : null}
         {mode === "minimal" ? <FooterMinimal siteName={siteName} year={year} /> : null}
         {mode === "strip" ? <FooterStrip siteName={siteName} year={year} /> : null}
-        {mode === "cards" ? <FooterCards siteName={siteName} year={year} /> : null}
+        {mode === "cards" ? <FooterCards siteName={siteName} year={year} footerMeta={footerMeta} /> : null}
       </div>
     </footer>
   );

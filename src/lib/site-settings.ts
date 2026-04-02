@@ -29,6 +29,14 @@ export type SiteSettingsDTO = {
   heroImageHeightPx: number | null;
   aboutBlockImageWidthPx: number | null;
   aboutBlockImageHeightPx: number | null;
+  /** Footer meta strip (preset cards) */
+  footerMetaShopOwner: string | null;
+  footerMetaAddress: string | null;
+  footerMetaEmail: string | null;
+  footerMetaHours: string | null;
+  /** Dùng fallback cho email/địa chỉ footer khi ô footer để trống */
+  contactEmail: string | null;
+  contactAddress: string | null;
 };
 
 const DEFAULTS: SiteSettingsDTO = {
@@ -57,6 +65,12 @@ const DEFAULTS: SiteSettingsDTO = {
   heroImageHeightPx: null,
   aboutBlockImageWidthPx: null,
   aboutBlockImageHeightPx: null,
+  footerMetaShopOwner: null,
+  footerMetaAddress: null,
+  footerMetaEmail: null,
+  footerMetaHours: null,
+  contactEmail: null,
+  contactAddress: null,
 };
 
 async function loadSiteSettings(): Promise<SiteSettingsDTO> {
@@ -88,11 +102,17 @@ async function loadSiteSettings(): Promise<SiteSettingsDTO> {
     heroImageHeightPx: row.heroImageHeightPx,
     aboutBlockImageWidthPx: row.aboutBlockImageWidthPx,
     aboutBlockImageHeightPx: row.aboutBlockImageHeightPx,
+    footerMetaShopOwner: row.footerMetaShopOwner,
+    footerMetaAddress: row.footerMetaAddress,
+    footerMetaEmail: row.footerMetaEmail,
+    footerMetaHours: row.footerMetaHours,
+    contactEmail: row.contactEmail,
+    contactAddress: row.contactAddress,
   };
 }
 
 /** Cache theo segment; gọi `revalidateTag('site-settings')` sau khi CMS cập nhật. */
-export const getSiteSettings = unstable_cache(loadSiteSettings, ["site-settings-v9-banner-images"], {
+export const getSiteSettings = unstable_cache(loadSiteSettings, ["site-settings-v10-footer-meta"], {
   revalidate: 300,
   tags: ["site-settings"],
 });

@@ -250,6 +250,13 @@ model SiteSetting {
   /** URL iframe Google Maps (Chia sẻ → Nhúng bản đồ → copy src). */
   contactMapEmbedUrl String? @map("contact_map_embed_url")
 
+  /// Dòng meta footer (preset cards): tên hiển thị chủ shop — để trống dùng tên site
+  footerMetaShopOwner String? @map("footer_meta_shop_owner")
+  footerMetaAddress   String? @map("footer_meta_address")
+  /// Để trống có thể fallback email trang Liên hệ (nếu có)
+  footerMetaEmail     String? @map("footer_meta_email")
+  footerMetaHours     String? @map("footer_meta_hours")
+
   createdAt        DateTime @default(now()) @map("created_at")
   updatedAt        DateTime @updatedAt @map("updated_at")
 

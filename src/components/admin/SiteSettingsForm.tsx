@@ -3,6 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { updateSiteSetting } from "@/app/actions/settingActions";
+import { BrandAssetUploadField } from "@/components/admin/BrandAssetUploadField";
+import { ColorHexField } from "@/components/admin/ColorHexField";
 import { STOREFRONT_THEME_OPTIONS } from "@/lib/storefront-theme";
 import type { StorefrontTheme } from "@prisma/client";
 
@@ -54,6 +56,10 @@ export type SiteSettingsInitial = {
   heroImageHeightPx: number | null;
   aboutBlockImageWidthPx: number | null;
   aboutBlockImageHeightPx: number | null;
+  footerMetaShopOwner: string;
+  footerMetaAddress: string;
+  footerMetaEmail: string;
+  footerMetaHours: string;
 };
 
 type Props = {
@@ -65,6 +71,11 @@ const SECTIONS = [
     id: "appearance" as const,
     label: "Giao diện storefront",
     description: "Preset bố cục, typography, bo góc thẻ (màu chủ đạo ở tab Chung)",
+  },
+  {
+    id: "footer" as const,
+    label: "Footer — dòng thông tin",
+    description: "Khối Shop owner / Address / Email / Hours (preset giao diện dạng cards)",
   },
   { id: "general" as const, label: "Chung & thương hiệu", description: "Tên site, logo, favicon, màu, tiền tệ" },
   {
@@ -110,7 +121,7 @@ export function SiteSettingsForm({ initial }: Props) {
     setMessage({ kind: "err", text: result.message });
   }
 
-  const formKey = `${initial.storefrontTheme}-${initial.primaryColor}-${initial.siteName}-${initial.defaultCurrency}-${initial.faviconUrl}`;
+  const formKey = `${initial.storefrontTheme}-${initial.primaryColor}-${initial.siteName}-${initial.defaultCurrency}-${initial.logoUrl}-${initial.faviconUrl}-${initial.footerMetaShopOwner}-${initial.footerMetaAddress}-${initial.footerMetaEmail}-${initial.footerMetaHours}`;
 
   const currentMeta = SECTIONS.find((s) => s.id === active);
 
@@ -182,6 +193,68 @@ export function SiteSettingsForm({ initial }: Props) {
           </fieldset>
         </div>
 
+        {/* —— Footer meta (cards) —— */}
+        <div className={`space-y-6 ${sectionHidden(active, "footer")}`}>
+          <p className="text-sm text-zinc-600">
+            Hiển thị trên preset <strong>boutique</strong> (footer dạng thẻ): một dòng bốn cột phía dưới newsletter. Để
+            trống «Tên chủ shop» sẽ dùng tên website. Để trống email/địa chỉ có thể lấy từ tab Liên hệ nếu đã nhập ở đó.
+          </p>
+          <div className="grid max-w-xl gap-4 sm:grid-cols-2">
+            <div className="sm:col-span-2">
+              <label htmlFor="footerMetaShopOwner" className="mb-1.5 block text-sm font-medium text-zinc-700">
+                Tên chủ shop (Shop owner)
+              </label>
+              <input
+                id="footerMetaShopOwner"
+                name="footerMetaShopOwner"
+                type="text"
+                defaultValue={initial.footerMetaShopOwner}
+                placeholder="Để trống = tên website"
+                className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-sm shadow-sm"
+              />
+            </div>
+            <div className="sm:col-span-2">
+              <label htmlFor="footerMetaAddress" className="mb-1.5 block text-sm font-medium text-zinc-700">
+                Địa chỉ (Address)
+              </label>
+              <input
+                id="footerMetaAddress"
+                name="footerMetaAddress"
+                type="text"
+                defaultValue={initial.footerMetaAddress}
+                placeholder="Để trống có thể dùng địa chỉ tab Liên hệ"
+                className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-sm shadow-sm"
+              />
+            </div>
+            <div>
+              <label htmlFor="footerMetaEmail" className="mb-1.5 block text-sm font-medium text-zinc-700">
+                Email hiển thị
+              </label>
+              <input
+                id="footerMetaEmail"
+                name="footerMetaEmail"
+                type="text"
+                defaultValue={initial.footerMetaEmail}
+                placeholder="Để trống = email tab Liên hệ"
+                className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-sm shadow-sm"
+              />
+            </div>
+            <div>
+              <label htmlFor="footerMetaHours" className="mb-1.5 block text-sm font-medium text-zinc-700">
+                Giờ làm việc (Hours)
+              </label>
+              <input
+                id="footerMetaHours"
+                name="footerMetaHours"
+                type="text"
+                defaultValue={initial.footerMetaHours}
+                placeholder="vd: Mon–Fri | 8:00 – 17:00"
+                className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-sm shadow-sm"
+              />
+            </div>
+          </div>
+        </div>
+
         {/* —— Chung —— */}
         <div className={`space-y-6 ${sectionHidden(active, "general")}`}>
           <div>
@@ -198,52 +271,32 @@ export function SiteSettingsForm({ initial }: Props) {
             />
           </div>
 
-          <div>
-            <label htmlFor="logoUrl" className="mb-1.5 block text-sm font-medium text-zinc-700">
-              Logo URL
-            </label>
-            <input
-              id="logoUrl"
-              name="logoUrl"
-              type="text"
-              placeholder="https://… hoặc /uploads/logo.png"
-              defaultValue={initial.logoUrl}
-              className="w-full max-w-xl rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-sm shadow-sm transition focus:border-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-500/20"
-            />
-          </div>
+          <BrandAssetUploadField
+            id="logoUrl"
+            name="logoUrl"
+            label="Logo (header)"
+            defaultValue={initial.logoUrl}
+            variant="logo"
+            helperText="Upload file hoặc dán URL. Khuyến nghị PNG/SVG nền trong suốt. Kích thước hiển thị chỉnh ở tab «Ảnh & kích thước»."
+          />
 
-          <div>
-            <label htmlFor="faviconUrl" className="mb-1.5 block text-sm font-medium text-zinc-700">
-              Favicon (icon tab trình duyệt)
-            </label>
-            <input
-              id="faviconUrl"
-              name="faviconUrl"
-              type="text"
-              placeholder="/uploads/…/icon.png hoặc URL ngoài"
-              defaultValue={initial.faviconUrl}
-              className="w-full max-w-xl rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-sm shadow-sm transition focus:border-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-500/20"
-            />
-            <p className="mt-1.5 text-xs text-zinc-500">
-              PNG / ICO / SVG khuyến nghị kích thước vuông (vd 32×32). Upload ảnh tại tab Media rồi dán URL vào đây.
-            </p>
-          </div>
+          <BrandAssetUploadField
+            id="faviconUrl"
+            name="faviconUrl"
+            label="Favicon (icon tab trình duyệt)"
+            defaultValue={initial.faviconUrl}
+            variant="favicon"
+            helperText="PNG / ICO / SVG vuông (vd 32×32). Có thể upload trực tiếp hoặc chọn ảnh đã có trong Media."
+          />
 
-          <div>
-            <label htmlFor="primaryColor" className="mb-1.5 block text-sm font-medium text-zinc-700">
-              Màu chủ đạo
-            </label>
-            <div className="flex flex-wrap items-center gap-3">
-              <input
-                id="primaryColor"
-                name="primaryColor"
-                type="color"
-                defaultValue={initial.primaryColor}
-                className="h-12 w-24 cursor-pointer rounded-lg border border-zinc-300 bg-white p-1 shadow-sm"
-              />
-              <span className="text-xs text-zinc-500">Chọn màu (định dạng hex)</span>
-            </div>
-          </div>
+          <ColorHexField
+            id="primaryColor"
+            name="primaryColor"
+            label="Màu chủ đạo"
+            defaultValue={initial.primaryColor}
+            placeholder="#2563eb"
+            hint="Dùng cho nút, giá, banner (khi không tùy chỉnh màu nền banner)."
+          />
 
           <div>
             <label htmlFor="defaultCurrency" className="mb-1.5 block text-sm font-medium text-zinc-700">
@@ -321,32 +374,24 @@ export function SiteSettingsForm({ initial }: Props) {
             </div>
           </div>
           <div className="grid max-w-xl gap-4 sm:grid-cols-2">
-            <div>
-              <label htmlFor="bannerBgColor" className="mb-1.5 block text-sm font-medium text-zinc-700">
-                Màu nền (hex, để trống = màu chủ đạo)
-              </label>
-              <input
-                id="bannerBgColor"
-                name="bannerBgColor"
-                type="text"
-                placeholder="#2563eb"
-                defaultValue={initial.bannerBgColor}
-                className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-sm shadow-sm"
-              />
-            </div>
-            <div>
-              <label htmlFor="bannerTextColor" className="mb-1.5 block text-sm font-medium text-zinc-700">
-                Màu chữ (hex)
-              </label>
-              <input
-                id="bannerTextColor"
-                name="bannerTextColor"
-                type="text"
-                placeholder="#ffffff"
-                defaultValue={initial.bannerTextColor}
-                className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-sm shadow-sm"
-              />
-            </div>
+            <ColorHexField
+              id="bannerBgColor"
+              name="bannerBgColor"
+              label="Màu nền"
+              defaultValue={initial.bannerBgColor}
+              placeholder="#2563eb"
+              optional
+              hint="Để trống = màu chủ đạo."
+            />
+            <ColorHexField
+              id="bannerTextColor"
+              name="bannerTextColor"
+              label="Màu chữ"
+              defaultValue={initial.bannerTextColor}
+              placeholder="#ffffff"
+              optional
+              hint="Để trống = trắng (#ffffff)."
+            />
           </div>
           <div>
             <label htmlFor="bannerScrollSec" className="mb-1.5 block text-sm font-medium text-zinc-700">

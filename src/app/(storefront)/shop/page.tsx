@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ProductCard } from "@/components/storefront/ProductCard";
 import { prisma } from "@/lib/prisma";
 
@@ -36,6 +37,29 @@ export default async function ShopPage() {
           ))}
         </ul>
       )}
+
+      <nav
+        aria-label="Help and policies"
+        className="rounded-2xl border border-zinc-200 bg-zinc-50/90 px-4 py-5 sm:px-6"
+      >
+        <p className="text-xs font-semibold uppercase tracking-wide text-zinc-500">Help &amp; policies</p>
+        <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-sm text-zinc-700">
+          {[
+            { href: "/faqs", label: "FAQs" },
+            { href: "/return-refund", label: "Return & refund" },
+            { href: "/shipping", label: "Shipping" },
+            { href: "/privacy-policy", label: "Privacy" },
+            { href: "/terms", label: "Terms" },
+            { href: "/contact", label: "Contact" },
+          ].map((item) => (
+            <li key={item.href}>
+              <Link href={item.href} className="underline-offset-2 transition hover:text-zinc-900 hover:underline">
+                {item.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </div>
   );
 }

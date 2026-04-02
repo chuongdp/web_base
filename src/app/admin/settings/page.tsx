@@ -27,6 +27,10 @@ const emptyAboutContact = {
   contactPhone: "",
   contactAddress: "",
   contactMapEmbedUrl: "",
+  footerMetaShopOwner: "",
+  footerMetaAddress: "",
+  footerMetaEmail: "",
+  footerMetaHours: "",
 };
 
 const defaults = {
@@ -110,6 +114,10 @@ export default async function AdminSettingsPage() {
         contactPhone: row.contactPhone ?? "",
         contactAddress: row.contactAddress ?? "",
         contactMapEmbedUrl: row.contactMapEmbedUrl ?? "",
+        footerMetaShopOwner: row.footerMetaShopOwner ?? "",
+        footerMetaAddress: row.footerMetaAddress ?? "",
+        footerMetaEmail: row.footerMetaEmail ?? "",
+        footerMetaHours: row.footerMetaHours ?? "",
       }
     : defaults;
 
