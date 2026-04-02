@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { auth } from "@/auth";
+import { requireAdminSession } from "@/lib/admin-auth";
 import { prisma } from "@/lib/prisma";
 import { revalidateSiteSettingsCache } from "@/lib/site-settings";
 import {
@@ -58,9 +58,8 @@ export type UpdateSiteSettingResult =
  * Sau khi thành công: revalidate cache + path `/` và `/admin/settings`.
  */
 export async function updateSiteSetting(formData: FormData): Promise<UpdateSiteSettingResult> {
-  const session = await auth();
-  if (!session?.user) {
-    return { ok: false, message: "Chưa đăng nhập." };
+  if (!(await requireAdminSession())) {
+    return { ok: false, message: "Không có quyền quản trị." };
   }
 
   const siteName = String(formData.get("siteName") ?? "").trim();

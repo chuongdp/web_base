@@ -1,5 +1,6 @@
 "use server";
 
+import { UserRole } from "@prisma/client";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { hashPassword } from "@/lib/password";
@@ -31,6 +32,15 @@ export async function registerAction(_prev: RegisterState, formData: FormData): 
   }
 
   const passwordHash = await hashPassword(password);
-  await prisma.user.create({ data: { email, passwordHash, name } });
+  const count = await prisma.user.count();
+  const designated = process.env.ADMIN_REGISTRATION_EMAIL?.trim().toLowerCase();
+  let role: UserRole = UserRole.USER;
+  if (designated) {
+    if (email === designated) role = UserRole.ADMIN;
+  } else if (count === 0) {
+    role = UserRole.ADMIN;
+  }
+
+  await prisma.user.create({ data: { email, passwordHash, name, role } });
   redirect("/login?registered=1");
 }

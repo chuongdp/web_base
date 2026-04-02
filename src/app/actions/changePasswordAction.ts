@@ -1,7 +1,7 @@
 "use server";
 
-import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { requireAdminSession } from "@/lib/admin-auth";
 import { hashPassword, verifyPassword } from "@/lib/password";
 
 export type ChangePasswordState = { ok: boolean; error: string | null };
@@ -12,10 +12,10 @@ export async function changePasswordAction(
   _prev: ChangePasswordState,
   formData: FormData,
 ): Promise<ChangePasswordState> {
-  const session = await auth();
+  const session = await requireAdminSession();
   const email = session?.user?.email?.trim().toLowerCase();
   if (!email) {
-    return { ok: false, error: "Chưa đăng nhập." };
+    return { ok: false, error: "Không có quyền quản trị." };
   }
 
   const currentPassword = String(formData.get("currentPassword") ?? "");

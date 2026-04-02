@@ -12,8 +12,8 @@ export default function RegisterPage() {
   return (
     <div className="flex min-h-dvh items-center justify-center bg-zinc-100 px-4">
       <div className="mx-auto w-full max-w-sm rounded-lg border border-zinc-200 bg-white p-8 shadow-sm">
-        <h1 className="text-center text-xl font-semibold text-zinc-900">Create admin account</h1>
-        <p className="mt-1 text-center text-sm text-zinc-500">Register to access the dashboard</p>
+        <h1 className="text-center text-xl font-semibold text-zinc-900">Create account</h1>
+        <p className="mt-1 text-center text-sm text-zinc-500">Register to shop and sign in</p>
 
         <form action={formAction} className="mt-6 space-y-4">
           <div>
