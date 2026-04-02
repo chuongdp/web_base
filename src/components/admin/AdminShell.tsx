@@ -8,6 +8,7 @@ import { signOutAction } from "@/app/admin/sign-out-action";
 
 const nav = [
   { href: "/admin", label: "Dashboard", match: (p: string) => p === "/admin" },
+  { href: "/admin/media", label: "Media", match: (p: string) => p.startsWith("/admin/media") },
   { href: "/admin/settings", label: "Cấu hình Web", match: (p: string) => p.startsWith("/admin/settings") },
   { href: "/admin/products", label: "Sản phẩm", match: (p: string) => p.startsWith("/admin/products") },
   { href: "/admin/categories", label: "Danh mục", match: (p: string) => p.startsWith("/admin/categories") },

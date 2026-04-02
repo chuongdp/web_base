@@ -30,6 +30,8 @@ export default async function StorefrontHomePage() {
         heroButtonLink={setting?.heroButtonLink ?? null}
         heroImageUrl={setting?.heroImageUrl ?? null}
         heroOverlayImageUrl={setting?.heroOverlayImageUrl ?? null}
+        heroImageWidthPx={setting?.heroImageWidthPx ?? null}
+        heroImageHeightPx={setting?.heroImageHeightPx ?? null}
       />
 
       <HomeCollectionsSection />

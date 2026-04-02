@@ -6,8 +6,17 @@ import { DEFAULT_STOREFRONT_THEME } from "@/lib/storefront-theme";
 export type SiteSettingsDTO = {
   siteName: string;
   logoUrl: string | null;
+  faviconUrl: string | null;
+  logoWidthPx: number | null;
+  logoHeightPx: number | null;
   primaryColor: string;
   bannerText: string | null;
+  bannerEnabled: boolean;
+  bannerHeightPx: number | null;
+  bannerFontSizePx: number | null;
+  bannerBgColor: string | null;
+  bannerTextColor: string | null;
+  bannerScrollSec: number | null;
   defaultCurrency: Currency;
   storefrontTheme: StorefrontTheme;
   heroTitle: string | null;
@@ -16,13 +25,26 @@ export type SiteSettingsDTO = {
   heroButtonLink: string | null;
   heroImageUrl: string | null;
   heroOverlayImageUrl: string | null;
+  heroImageWidthPx: number | null;
+  heroImageHeightPx: number | null;
+  aboutBlockImageWidthPx: number | null;
+  aboutBlockImageHeightPx: number | null;
 };
 
 const DEFAULTS: SiteSettingsDTO = {
   siteName: "Store",
   logoUrl: null,
+  faviconUrl: null,
+  logoWidthPx: null,
+  logoHeightPx: null,
   primaryColor: "#2563eb",
   bannerText: null,
+  bannerEnabled: true,
+  bannerHeightPx: null,
+  bannerFontSizePx: null,
+  bannerBgColor: null,
+  bannerTextColor: null,
+  bannerScrollSec: null,
   defaultCurrency: "USD",
   storefrontTheme: DEFAULT_STOREFRONT_THEME,
   heroTitle: null,
@@ -31,6 +53,10 @@ const DEFAULTS: SiteSettingsDTO = {
   heroButtonLink: null,
   heroImageUrl: null,
   heroOverlayImageUrl: null,
+  heroImageWidthPx: null,
+  heroImageHeightPx: null,
+  aboutBlockImageWidthPx: null,
+  aboutBlockImageHeightPx: null,
 };
 
 async function loadSiteSettings(): Promise<SiteSettingsDTO> {
@@ -39,8 +65,17 @@ async function loadSiteSettings(): Promise<SiteSettingsDTO> {
   return {
     siteName: row.siteName,
     logoUrl: row.logoUrl,
+    faviconUrl: row.faviconUrl,
+    logoWidthPx: row.logoWidthPx,
+    logoHeightPx: row.logoHeightPx,
     primaryColor: row.primaryColor?.trim() || DEFAULTS.primaryColor,
     bannerText: row.bannerText,
+    bannerEnabled: row.bannerEnabled,
+    bannerHeightPx: row.bannerHeightPx,
+    bannerFontSizePx: row.bannerFontSizePx,
+    bannerBgColor: row.bannerBgColor,
+    bannerTextColor: row.bannerTextColor,
+    bannerScrollSec: row.bannerScrollSec,
     defaultCurrency: row.defaultCurrency,
     storefrontTheme: row.storefrontTheme ?? DEFAULT_STOREFRONT_THEME,
     heroTitle: row.heroTitle,
@@ -49,11 +84,15 @@ async function loadSiteSettings(): Promise<SiteSettingsDTO> {
     heroButtonLink: row.heroButtonLink,
     heroImageUrl: row.heroImageUrl,
     heroOverlayImageUrl: row.heroOverlayImageUrl,
+    heroImageWidthPx: row.heroImageWidthPx,
+    heroImageHeightPx: row.heroImageHeightPx,
+    aboutBlockImageWidthPx: row.aboutBlockImageWidthPx,
+    aboutBlockImageHeightPx: row.aboutBlockImageHeightPx,
   };
 }
 
 /** Cache theo segment; gọi `revalidateTag('site-settings')` sau khi CMS cập nhật. */
-export const getSiteSettings = unstable_cache(loadSiteSettings, ["site-settings-v6-themes"], {
+export const getSiteSettings = unstable_cache(loadSiteSettings, ["site-settings-v9-banner-images"], {
   revalidate: 300,
   tags: ["site-settings"],
 });

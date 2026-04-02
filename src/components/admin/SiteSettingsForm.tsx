@@ -9,6 +9,7 @@ import type { StorefrontTheme } from "@prisma/client";
 export type SiteSettingsInitial = {
   siteName: string;
   logoUrl: string;
+  faviconUrl: string;
   primaryColor: string;
   bannerText: string;
   defaultCurrency: "VND" | "USD";
@@ -41,6 +42,18 @@ export type SiteSettingsInitial = {
   contactPhone: string;
   contactAddress: string;
   contactMapEmbedUrl: string;
+  bannerEnabled: boolean;
+  bannerHeightPx: number | null;
+  bannerFontSizePx: number | null;
+  bannerBgColor: string;
+  bannerTextColor: string;
+  bannerScrollSec: number | null;
+  logoWidthPx: number | null;
+  logoHeightPx: number | null;
+  heroImageWidthPx: number | null;
+  heroImageHeightPx: number | null;
+  aboutBlockImageWidthPx: number | null;
+  aboutBlockImageHeightPx: number | null;
 };
 
 type Props = {
@@ -53,8 +66,18 @@ const SECTIONS = [
     label: "Giao diện storefront",
     description: "Preset bố cục, typography, bo góc thẻ (màu chủ đạo ở tab Chung)",
   },
-  { id: "general" as const, label: "Chung & thương hiệu", description: "Tên site, logo, màu, banner, tiền tệ" },
-  { id: "hero" as const, label: "Hero trang chủ", description: "Tiêu đề, CTA, ảnh hero" },
+  { id: "general" as const, label: "Chung & thương hiệu", description: "Tên site, logo, favicon, màu, tiền tệ" },
+  {
+    id: "banner" as const,
+    label: "Banner trên cùng",
+    description: "Thông báo chạy ngang, màu, tốc độ",
+  },
+  {
+    id: "images" as const,
+    label: "Ảnh & kích thước",
+    description: "Logo, hero, About — hiển thị trên web (px)",
+  },
+  { id: "hero" as const, label: "Hero trang chủ", description: "Tiêu đề, CTA, URL ảnh hero" },
   { id: "about" as const, label: "About Us", description: "Nội dung /about-us" },
   { id: "contact" as const, label: "Liên hệ", description: "Nội dung /contact" },
 ];
@@ -87,7 +110,7 @@ export function SiteSettingsForm({ initial }: Props) {
     setMessage({ kind: "err", text: result.message });
   }
 
-  const formKey = `${initial.storefrontTheme}-${initial.primaryColor}-${initial.siteName}-${initial.defaultCurrency}`;
+  const formKey = `${initial.storefrontTheme}-${initial.primaryColor}-${initial.siteName}-${initial.defaultCurrency}-${initial.faviconUrl}`;
 
   const currentMeta = SECTIONS.find((s) => s.id === active);
 
@@ -190,6 +213,23 @@ export function SiteSettingsForm({ initial }: Props) {
           </div>
 
           <div>
+            <label htmlFor="faviconUrl" className="mb-1.5 block text-sm font-medium text-zinc-700">
+              Favicon (icon tab trình duyệt)
+            </label>
+            <input
+              id="faviconUrl"
+              name="faviconUrl"
+              type="text"
+              placeholder="/uploads/…/icon.png hoặc URL ngoài"
+              defaultValue={initial.faviconUrl}
+              className="w-full max-w-xl rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-sm shadow-sm transition focus:border-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-500/20"
+            />
+            <p className="mt-1.5 text-xs text-zinc-500">
+              PNG / ICO / SVG khuyến nghị kích thước vuông (vd 32×32). Upload ảnh tại tab Media rồi dán URL vào đây.
+            </p>
+          </div>
+
+          <div>
             <label htmlFor="primaryColor" className="mb-1.5 block text-sm font-medium text-zinc-700">
               Màu chủ đạo
             </label>
@@ -203,20 +243,6 @@ export function SiteSettingsForm({ initial }: Props) {
               />
               <span className="text-xs text-zinc-500">Chọn màu (định dạng hex)</span>
             </div>
-          </div>
-
-          <div>
-            <label htmlFor="bannerText" className="mb-1.5 block text-sm font-medium text-zinc-700">
-              Banner
-            </label>
-            <textarea
-              id="bannerText"
-              name="bannerText"
-              rows={4}
-              defaultValue={initial.bannerText}
-              placeholder="Thông báo trên đầu trang (để trống nếu không dùng)"
-              className="w-full max-w-xl resize-y rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-sm shadow-sm transition focus:border-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-500/20"
-            />
           </div>
 
           <div>
@@ -238,10 +264,220 @@ export function SiteSettingsForm({ initial }: Props) {
           </div>
         </div>
 
+        {/* —— Banner —— */}
+        <div className={`space-y-6 ${sectionHidden(active, "banner")}`}>
+          <label className="flex cursor-pointer items-center gap-2 text-sm font-medium text-zinc-800">
+            <input
+              type="checkbox"
+              name="bannerEnabled"
+              defaultChecked={initial.bannerEnabled}
+              className="h-4 w-4 rounded border-zinc-300 text-zinc-900"
+            />
+            Bật banner chạy ngang trên cùng
+          </label>
+          <div>
+            <label htmlFor="bannerText" className="mb-1.5 block text-sm font-medium text-zinc-700">
+              Nội dung banner
+            </label>
+            <textarea
+              id="bannerText"
+              name="bannerText"
+              rows={3}
+              defaultValue={initial.bannerText}
+              placeholder="Thông báo (để trống = ẩn banner)"
+              className="w-full max-w-xl resize-y rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-sm shadow-sm transition focus:border-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-500/20"
+            />
+          </div>
+          <div className="grid max-w-xl gap-4 sm:grid-cols-2">
+            <div>
+              <label htmlFor="bannerHeightPx" className="mb-1.5 block text-sm font-medium text-zinc-700">
+                Chiều cao tối thiểu (px)
+              </label>
+              <input
+                id="bannerHeightPx"
+                name="bannerHeightPx"
+                type="number"
+                min={24}
+                max={200}
+                placeholder="Mặc định"
+                defaultValue={initial.bannerHeightPx ?? ""}
+                className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-sm shadow-sm"
+              />
+            </div>
+            <div>
+              <label htmlFor="bannerFontSizePx" className="mb-1.5 block text-sm font-medium text-zinc-700">
+                Cỡ chữ (px)
+              </label>
+              <input
+                id="bannerFontSizePx"
+                name="bannerFontSizePx"
+                type="number"
+                min={10}
+                max={32}
+                placeholder="Mặc định (text-sm)"
+                defaultValue={initial.bannerFontSizePx ?? ""}
+                className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-sm shadow-sm"
+              />
+            </div>
+          </div>
+          <div className="grid max-w-xl gap-4 sm:grid-cols-2">
+            <div>
+              <label htmlFor="bannerBgColor" className="mb-1.5 block text-sm font-medium text-zinc-700">
+                Màu nền (hex, để trống = màu chủ đạo)
+              </label>
+              <input
+                id="bannerBgColor"
+                name="bannerBgColor"
+                type="text"
+                placeholder="#2563eb"
+                defaultValue={initial.bannerBgColor}
+                className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-sm shadow-sm"
+              />
+            </div>
+            <div>
+              <label htmlFor="bannerTextColor" className="mb-1.5 block text-sm font-medium text-zinc-700">
+                Màu chữ (hex)
+              </label>
+              <input
+                id="bannerTextColor"
+                name="bannerTextColor"
+                type="text"
+                placeholder="#ffffff"
+                defaultValue={initial.bannerTextColor}
+                className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-sm shadow-sm"
+              />
+            </div>
+          </div>
+          <div>
+            <label htmlFor="bannerScrollSec" className="mb-1.5 block text-sm font-medium text-zinc-700">
+              Thời gian một vòng chạy (giây)
+            </label>
+            <input
+              id="bannerScrollSec"
+              name="bannerScrollSec"
+              type="number"
+              min={5}
+              max={300}
+              step={1}
+              placeholder="32"
+              defaultValue={initial.bannerScrollSec ?? ""}
+              className="w-full max-w-xs rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-sm shadow-sm"
+            />
+            <p className="mt-1 text-xs text-zinc-500">Số càng lớn chữ chạy càng chậm.</p>
+          </div>
+        </div>
+
+        {/* —— Ảnh & kích thước —— */}
+        <div className={`space-y-6 ${sectionHidden(active, "images")}`}>
+          <p className="text-sm text-zinc-600">
+            Nhập số pixel (px) để giới hạn hiển thị. Để trống = bố cục mặc định. Favicon không áp dụng kích thước trên
+            tab trình duyệt.
+          </p>
+          <div>
+            <p className="mb-2 text-sm font-medium text-zinc-800">Logo header</p>
+            <div className="grid max-w-xl gap-4 sm:grid-cols-2">
+              <div>
+                <label htmlFor="logoWidthPx" className="mb-1.5 block text-xs text-zinc-600">
+                  Rộng (px)
+                </label>
+                <input
+                  id="logoWidthPx"
+                  name="logoWidthPx"
+                  type="number"
+                  min={16}
+                  max={400}
+                  defaultValue={initial.logoWidthPx ?? ""}
+                  className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm shadow-sm"
+                />
+              </div>
+              <div>
+                <label htmlFor="logoHeightPx" className="mb-1.5 block text-xs text-zinc-600">
+                  Cao (px)
+                </label>
+                <input
+                  id="logoHeightPx"
+                  name="logoHeightPx"
+                  type="number"
+                  min={16}
+                  max={200}
+                  defaultValue={initial.logoHeightPx ?? ""}
+                  className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm shadow-sm"
+                />
+              </div>
+            </div>
+          </div>
+          <div>
+            <p className="mb-2 text-sm font-medium text-zinc-800">Ảnh hero trang chủ</p>
+            <div className="grid max-w-xl gap-4 sm:grid-cols-2">
+              <div>
+                <label htmlFor="heroImageWidthPx" className="mb-1.5 block text-xs text-zinc-600">
+                  max-width (px)
+                </label>
+                <input
+                  id="heroImageWidthPx"
+                  name="heroImageWidthPx"
+                  type="number"
+                  min={100}
+                  max={2000}
+                  defaultValue={initial.heroImageWidthPx ?? ""}
+                  className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm shadow-sm"
+                />
+              </div>
+              <div>
+                <label htmlFor="heroImageHeightPx" className="mb-1.5 block text-xs text-zinc-600">
+                  max-height (px)
+                </label>
+                <input
+                  id="heroImageHeightPx"
+                  name="heroImageHeightPx"
+                  type="number"
+                  min={100}
+                  max={1200}
+                  defaultValue={initial.heroImageHeightPx ?? ""}
+                  className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm shadow-sm"
+                />
+              </div>
+            </div>
+          </div>
+          <div>
+            <p className="mb-2 text-sm font-medium text-zinc-800">Ảnh khối About Us (3 ảnh)</p>
+            <div className="grid max-w-xl gap-4 sm:grid-cols-2">
+              <div>
+                <label htmlFor="aboutBlockImageWidthPx" className="mb-1.5 block text-xs text-zinc-600">
+                  max-width (px)
+                </label>
+                <input
+                  id="aboutBlockImageWidthPx"
+                  name="aboutBlockImageWidthPx"
+                  type="number"
+                  min={100}
+                  max={2000}
+                  defaultValue={initial.aboutBlockImageWidthPx ?? ""}
+                  className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm shadow-sm"
+                />
+              </div>
+              <div>
+                <label htmlFor="aboutBlockImageHeightPx" className="mb-1.5 block text-xs text-zinc-600">
+                  max-height (px)
+                </label>
+                <input
+                  id="aboutBlockImageHeightPx"
+                  name="aboutBlockImageHeightPx"
+                  type="number"
+                  min={100}
+                  max={1200}
+                  defaultValue={initial.aboutBlockImageHeightPx ?? ""}
+                  className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm shadow-sm"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* —— Hero —— */}
         <div className={`space-y-4 ${sectionHidden(active, "hero")}`}>
           <p className="text-sm text-zinc-600">
-            Để trống để dùng nội dung mặc định (trừ ảnh nếu cần).
+            Để trống để dùng nội dung mặc định (trừ ảnh nếu cần).             Kích thước hiển thị ảnh hero: mở tab Ảnh &amp; kích thước.
           </p>
           <div>
             <label htmlFor="heroTitle" className="mb-1.5 block text-sm font-medium text-zinc-700">

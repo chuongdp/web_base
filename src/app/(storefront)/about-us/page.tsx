@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import Image from "next/image";
 import { getSiteSetting } from "@/app/actions/settingActions";
 import { CustomerGallery } from "@/components/storefront/CustomerGallery";
@@ -40,6 +41,15 @@ export default async function AboutUsPage() {
   const b3img = s?.aboutBlock3ImageUrl ?? IMG_FASHION;
   const bestTitle = s?.aboutBestSellersTitle ?? d.bestSellersTitle;
 
+  const aboutImgStyle: CSSProperties | undefined =
+    (s?.aboutBlockImageWidthPx && s.aboutBlockImageWidthPx > 0) ||
+    (s?.aboutBlockImageHeightPx && s.aboutBlockImageHeightPx > 0)
+      ? {
+          maxWidth: s?.aboutBlockImageWidthPx && s.aboutBlockImageWidthPx > 0 ? `${s.aboutBlockImageWidthPx}px` : undefined,
+          maxHeight: s?.aboutBlockImageHeightPx && s.aboutBlockImageHeightPx > 0 ? `${s.aboutBlockImageHeightPx}px` : undefined,
+        }
+      : undefined;
+
   return (
     <div className="-mx-4 -mt-10 lg:-mx-8">
       <section
@@ -67,7 +77,10 @@ export default async function AboutUsPage() {
             <h2 className="font-serif text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl">{b1t}</h2>
             <p className="text-base leading-relaxed text-zinc-600">{b1body}</p>
           </div>
-          <div className="relative order-1 aspect-[4/3] w-full overflow-hidden rounded-xl bg-zinc-200 md:order-2">
+          <div
+            className="relative order-1 aspect-[4/3] w-full overflow-hidden rounded-xl bg-zinc-200 md:order-2"
+            style={aboutImgStyle}
+          >
             <Image src={b1img} alt={b1t} fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" />
           </div>
         </div>
@@ -75,7 +88,10 @@ export default async function AboutUsPage() {
 
       <section className="bg-white px-4 py-16 md:py-20 lg:px-0">
         <div className="mx-auto grid max-w-7xl items-center gap-10 md:grid-cols-2 md:gap-12">
-          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-zinc-200">
+          <div
+            className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-zinc-200"
+            style={aboutImgStyle}
+          >
             <Image src={b2img} alt={b2t} fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" />
           </div>
           <div className="space-y-4">
@@ -91,7 +107,10 @@ export default async function AboutUsPage() {
             <h2 className="font-serif text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl">{b3t}</h2>
             <p className="text-base leading-relaxed text-zinc-600">{b3body}</p>
           </div>
-          <div className="relative order-1 aspect-[4/3] w-full overflow-hidden rounded-xl bg-zinc-200 md:order-2">
+          <div
+            className="relative order-1 aspect-[4/3] w-full overflow-hidden rounded-xl bg-zinc-200 md:order-2"
+            style={aboutImgStyle}
+          >
             <Image src={b3img} alt={b3t} fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" />
           </div>
         </div>

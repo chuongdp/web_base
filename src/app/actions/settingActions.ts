@@ -42,6 +42,22 @@ function optStr(formData: FormData, key: string): string | null {
   return v.length > 0 ? v : null;
 }
 
+function optPositiveInt(formData: FormData, key: string): number | null {
+  const t = String(formData.get(key) ?? "").trim();
+  if (!t) return null;
+  const n = Number.parseInt(t, 10);
+  if (!Number.isFinite(n) || n < 1 || n > 10000) return null;
+  return n;
+}
+
+function optBannerScrollSec(formData: FormData, key: string): number | null {
+  const t = String(formData.get(key) ?? "").trim();
+  if (!t) return null;
+  const n = Number.parseFloat(t);
+  if (!Number.isFinite(n) || n < 1 || n > 600) return null;
+  return n;
+}
+
 /** Lấy bản ghi SiteSetting đầu tiên (theo id tăng dần). */
 export async function getSiteSetting(): Promise<SiteSetting | null> {
   return prisma.siteSetting.findFirst({
@@ -66,6 +82,7 @@ export async function updateSiteSetting(formData: FormData): Promise<UpdateSiteS
   const logoUrlRaw = String(formData.get("logoUrl") ?? "").trim();
   const primaryColorRaw = String(formData.get("primaryColor") ?? "").trim();
   const bannerTextRaw = String(formData.get("bannerText") ?? "").trim();
+  const bannerEnabled = formData.get("bannerEnabled") === "on";
   const defaultCurrencyRaw = String(formData.get("defaultCurrency") ?? "USD").trim();
   const storefrontThemeRaw = String(formData.get("storefrontTheme") ?? "boutique").trim();
 
@@ -122,7 +139,39 @@ export async function updateSiteSetting(formData: FormData): Promise<UpdateSiteS
     : StorefrontTheme.boutique;
 
   const logoUrl = logoUrlRaw.length > 0 ? logoUrlRaw : null;
+  const faviconUrlRaw = String(formData.get("faviconUrl") ?? "").trim();
+  const faviconUrl = faviconUrlRaw.length > 0 ? faviconUrlRaw : null;
   const bannerText = bannerTextRaw.length > 0 ? bannerTextRaw : null;
+
+  const logoWidthPx = optPositiveInt(formData, "logoWidthPx");
+  const logoHeightPx = optPositiveInt(formData, "logoHeightPx");
+  const heroImageWidthPx = optPositiveInt(formData, "heroImageWidthPx");
+  const heroImageHeightPx = optPositiveInt(formData, "heroImageHeightPx");
+  const aboutBlockImageWidthPx = optPositiveInt(formData, "aboutBlockImageWidthPx");
+  const aboutBlockImageHeightPx = optPositiveInt(formData, "aboutBlockImageHeightPx");
+
+  const bannerHeightPx = optPositiveInt(formData, "bannerHeightPx");
+  const bannerFontSizePx = optPositiveInt(formData, "bannerFontSizePx");
+  const bannerScrollSec = optBannerScrollSec(formData, "bannerScrollSec");
+
+  const bannerBgRaw = String(formData.get("bannerBgColor") ?? "").trim();
+  const bannerTextColorRaw = String(formData.get("bannerTextColor") ?? "").trim();
+  let bannerBgColor: string | null = null;
+  if (bannerBgRaw.length > 0) {
+    const h = normalizeHexColor(bannerBgRaw);
+    if (!h) {
+      return { ok: false, message: "Màu nền banner phải là hex 6 ký tự (vd: #2563eb)." };
+    }
+    bannerBgColor = h;
+  }
+  let bannerTextColor: string | null = null;
+  if (bannerTextColorRaw.length > 0) {
+    const h = normalizeHexColor(bannerTextColorRaw);
+    if (!h) {
+      return { ok: false, message: "Màu chữ banner phải là hex 6 ký tự." };
+    }
+    bannerTextColor = h;
+  }
 
   let primaryColor: string | null = null;
   if (primaryColorRaw.length > 0) {
@@ -146,8 +195,17 @@ export async function updateSiteSetting(formData: FormData): Promise<UpdateSiteS
       id: targetId,
       siteName,
       logoUrl,
+      faviconUrl,
+      logoWidthPx,
+      logoHeightPx,
       primaryColor,
       bannerText,
+      bannerEnabled,
+      bannerHeightPx,
+      bannerFontSizePx,
+      bannerBgColor,
+      bannerTextColor,
+      bannerScrollSec,
       defaultCurrency,
       storefrontTheme,
       heroTitle,
@@ -156,6 +214,8 @@ export async function updateSiteSetting(formData: FormData): Promise<UpdateSiteS
       heroButtonLink,
       heroImageUrl,
       heroOverlayImageUrl,
+      heroImageWidthPx,
+      heroImageHeightPx,
       aboutHeroTitle,
       aboutWhoTitle,
       aboutIntroP1,
@@ -169,6 +229,8 @@ export async function updateSiteSetting(formData: FormData): Promise<UpdateSiteS
       aboutBlock3Title,
       aboutBlock3Body,
       aboutBlock3ImageUrl,
+      aboutBlockImageWidthPx,
+      aboutBlockImageHeightPx,
       aboutBestSellersTitle,
       galleryHeading,
       gallerySubtitle,
@@ -182,8 +244,17 @@ export async function updateSiteSetting(formData: FormData): Promise<UpdateSiteS
     update: {
       siteName,
       logoUrl,
+      faviconUrl,
+      logoWidthPx,
+      logoHeightPx,
       primaryColor,
       bannerText,
+      bannerEnabled,
+      bannerHeightPx,
+      bannerFontSizePx,
+      bannerBgColor,
+      bannerTextColor,
+      bannerScrollSec,
       defaultCurrency,
       storefrontTheme,
       heroTitle,
@@ -192,6 +263,8 @@ export async function updateSiteSetting(formData: FormData): Promise<UpdateSiteS
       heroButtonLink,
       heroImageUrl,
       heroOverlayImageUrl,
+      heroImageWidthPx,
+      heroImageHeightPx,
       aboutHeroTitle,
       aboutWhoTitle,
       aboutIntroP1,
@@ -205,6 +278,8 @@ export async function updateSiteSetting(formData: FormData): Promise<UpdateSiteS
       aboutBlock3Title,
       aboutBlock3Body,
       aboutBlock3ImageUrl,
+      aboutBlockImageWidthPx,
+      aboutBlockImageHeightPx,
       aboutBestSellersTitle,
       galleryHeading,
       gallerySubtitle,

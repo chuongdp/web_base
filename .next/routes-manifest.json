@@ -90,6 +90,12 @@
       "namedRegex": "^/admin/collections(?:/)?$"
     },
     {
+      "page": "/admin/media",
+      "regex": "^/admin/media(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/media(?:/)?$"
+    },
+    {
       "page": "/admin/product-collections",
       "regex": "^/admin/product\\-collections(?:/)?$",
       "routeKeys": {},

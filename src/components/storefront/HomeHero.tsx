@@ -1,4 +1,5 @@
 import type { StorefrontTheme } from "@prisma/client";
+import type { CSSProperties } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { getHeroLayoutMode } from "@/lib/storefront-theme";
@@ -17,7 +18,16 @@ type Props = {
   heroButtonLink?: string | null;
   heroImageUrl?: string | null;
   heroOverlayImageUrl?: string | null;
+  heroImageWidthPx?: number | null;
+  heroImageHeightPx?: number | null;
 };
+
+function heroImgBoxStyle(w?: number | null, h?: number | null): CSSProperties | undefined {
+  const s: CSSProperties = {};
+  if (w && w > 0) s.maxWidth = `${w}px`;
+  if (h && h > 0) s.maxHeight = `${h}px`;
+  return Object.keys(s).length ? s : undefined;
+}
 
 function HeroCta({
   showCta,
@@ -52,7 +62,10 @@ export function HomeHero({
   heroButtonLink,
   heroImageUrl,
   heroOverlayImageUrl,
+  heroImageWidthPx,
+  heroImageHeightPx,
 }: Props) {
+  const imgBox = heroImgBoxStyle(heroImageWidthPx, heroImageHeightPx);
   const title = heroTitle?.trim() ?? "";
   const subtitle = heroSubtitle?.trim() ?? "";
   const buttonText = heroButtonText?.trim() ?? "";
@@ -68,7 +81,10 @@ export function HomeHero({
   if (mode === "editorialCinematic") {
     return (
       <section className="relative left-1/2 mb-8 w-screen max-w-[100vw] -translate-x-1/2">
-        <div className="relative aspect-[4/5] w-full sm:aspect-[21/9] lg:aspect-[2.4/1]">
+        <div
+          className="relative aspect-[4/5] w-full sm:aspect-[21/9] lg:aspect-[2.4/1]"
+          style={imgBox}
+        >
           {mainImg ? (
             <Image
               src={mainImg}
@@ -113,7 +129,10 @@ export function HomeHero({
           ) : null}
           <HeroCta showCta={showCta} buttonHref={buttonHref} buttonText={buttonText} className="mt-8" />
         </div>
-        <div className="relative order-1 aspect-[4/3] min-h-[240px] bg-zinc-100 lg:order-2 lg:aspect-auto lg:min-h-0">
+        <div
+          className="relative order-1 aspect-[4/3] min-h-[240px] bg-zinc-100 lg:order-2 lg:aspect-auto lg:min-h-0"
+          style={imgBox}
+        >
           {mainImg ? (
             <Image
               src={mainImg}
@@ -137,7 +156,10 @@ export function HomeHero({
   if (mode === "splitBorderReverse") {
     return (
       <section className="grid gap-0 overflow-hidden border-2 border-zinc-900 lg:grid-cols-2 lg:min-h-[min(520px,70vh)]">
-        <div className="relative order-1 aspect-[4/3] min-h-[240px] bg-zinc-100 lg:aspect-auto lg:min-h-0">
+        <div
+          className="relative order-1 aspect-[4/3] min-h-[240px] bg-zinc-100 lg:aspect-auto lg:min-h-0"
+          style={imgBox}
+        >
           {mainImg ? (
             <Image
               src={mainImg}
@@ -183,7 +205,7 @@ export function HomeHero({
           ) : null}
           <HeroCta showCta={showCta} buttonHref={buttonHref} buttonText={buttonText} className="mt-10" />
         </div>
-        <div className="relative mx-auto w-full max-w-xs shrink-0 lg:mx-0 lg:mt-2">
+        <div className="relative mx-auto w-full max-w-xs shrink-0 lg:mx-0 lg:mt-2" style={imgBox}>
           <div className="relative aspect-[3/4] w-full overflow-hidden rounded-xl bg-zinc-200">
             {mainImg ? (
               <Image
@@ -235,7 +257,7 @@ export function HomeHero({
             ) : null}
             <HeroCta showCta={showCta} buttonHref={buttonHref} buttonText={buttonText} className="mt-8" />
           </div>
-          <div className="relative order-1 lg:order-2">
+          <div className="relative order-1 lg:order-2" style={imgBox}>
             <div className="relative mx-auto aspect-[3/4] max-h-[min(480px,65vh)] w-full max-w-md overflow-hidden rounded-[1.75rem] bg-zinc-200 shadow-inner">
               {mainImg ? (
                 <Image
@@ -292,7 +314,7 @@ export function HomeHero({
         <HeroCta showCta={showCta} buttonHref={buttonHref} buttonText={buttonText} className="mt-8" />
       </div>
 
-      <div className="relative order-1 lg:order-2">
+      <div className="relative order-1 lg:order-2" style={imgBox}>
         <div className="relative mx-auto aspect-[3/4] max-h-[min(520px,70vh)] w-full max-w-md overflow-hidden rounded-2xl bg-zinc-200">
           {mainImg ? (
             <Image

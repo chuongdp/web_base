@@ -2,6 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Marquee banner — dùng với animationDuration inline từ CMS */
+@keyframes sf-marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sf-banner-track {
+    animation: none !important;
+  }
+}
+
 /* —— Storefront theme tokens (data-storefront-theme trên .sf-store-root) —— */
 .sf-store-root {
   --sf-page-bg: #ffffff;

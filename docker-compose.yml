@@ -16,10 +16,13 @@ services:
       AUTH_URL: ${AUTH_URL:-http://localhost:3000}
     volumes:
       - sqlite_data:/data
+      # Ảnh upload (Media) — giữ khi rebuild container
+      - media_uploads:/app/public/uploads
     restart: unless-stopped
 
 volumes:
   sqlite_data:
+  media_uploads:
 
 # Một lệnh: docker compose up -d --build
 # Dữ liệu SQLite nằm trong volume (tên thực tế: ${COMPOSE_PROJECT_NAME}_sqlite_data).

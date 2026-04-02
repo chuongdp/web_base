@@ -18,6 +18,8 @@ export type { NavCategory, NavProductCollection } from "@/components/storefront/
 type Props = {
   siteName: string;
   logoUrl: string | null;
+  logoWidthPx?: number | null;
+  logoHeightPx?: number | null;
   categories: NavCategory[];
   productCollections: NavProductCollection[];
   theme: StorefrontTheme;
@@ -51,7 +53,15 @@ function HeaderShell({
   );
 }
 
-export function StorefrontHeaderClient({ siteName, logoUrl, categories, productCollections, theme }: Props) {
+export function StorefrontHeaderClient({
+  siteName,
+  logoUrl,
+  logoWidthPx,
+  logoHeightPx,
+  categories,
+  productCollections,
+  theme,
+}: Props) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const mode = getHeaderLayoutMode(theme);
 
@@ -70,7 +80,13 @@ export function StorefrontHeaderClient({ siteName, logoUrl, categories, productC
         <div className="mx-auto flex w-full max-w-6xl flex-col items-center gap-4 px-4 py-5 lg:px-8">
           <div className="flex w-full items-center justify-between gap-4">
             <div className="w-20 shrink-0 lg:w-28" aria-hidden />
-            <HeaderLogo siteName={siteName} logoUrl={logoUrl} className="justify-center" />
+            <HeaderLogo
+              siteName={siteName}
+              logoUrl={logoUrl}
+              logoWidthPx={logoWidthPx}
+              logoHeightPx={logoHeightPx}
+              className="justify-center"
+            />
             <div className="w-20 shrink-0 justify-end sm:w-28 lg:flex lg:justify-end">
               <HeaderIconActions mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
             </div>
@@ -95,7 +111,12 @@ export function StorefrontHeaderClient({ siteName, logoUrl, categories, productC
       <HeaderShell>
         <div className="mx-auto flex max-w-6xl flex-col gap-2 px-3 py-2.5 sm:px-5 lg:px-8">
           <div className="flex items-center gap-2 sm:gap-4">
-            <HeaderLogo siteName={siteName} logoUrl={logoUrl} />
+            <HeaderLogo
+            siteName={siteName}
+            logoUrl={logoUrl}
+            logoWidthPx={logoWidthPx}
+            logoHeightPx={logoHeightPx}
+          />
             <nav className="hidden shrink-0 items-center gap-4 lg:flex" aria-label="Main">
               <InlineNavLinks navLinkClass="text-xs font-medium uppercase tracking-wide text-zinc-700 hover:text-zinc-900" />
               <ShopDropdown
@@ -123,7 +144,12 @@ export function StorefrontHeaderClient({ siteName, logoUrl, categories, productC
       <HeaderShell>
         <div className="flex w-full flex-col gap-3 px-4 py-3 sm:px-8 lg:px-12 lg:py-4">
           <div className="flex items-center gap-4 lg:gap-8">
-            <HeaderLogo siteName={siteName} logoUrl={logoUrl} />
+            <HeaderLogo
+            siteName={siteName}
+            logoUrl={logoUrl}
+            logoWidthPx={logoWidthPx}
+            logoHeightPx={logoHeightPx}
+          />
             <div className="hidden min-w-0 flex-1 md:flex">
               <SearchBlock className="w-full max-w-2xl" />
             </div>
@@ -151,7 +177,12 @@ export function StorefrontHeaderClient({ siteName, logoUrl, categories, productC
       <HeaderShell floating>
         <div className="flex flex-col gap-3 px-4 py-3 lg:gap-4 lg:px-6 lg:py-4">
           <div className="flex items-center gap-3 sm:gap-4 lg:gap-6">
-            <HeaderLogo siteName={siteName} logoUrl={logoUrl} />
+            <HeaderLogo
+            siteName={siteName}
+            logoUrl={logoUrl}
+            logoWidthPx={logoWidthPx}
+            logoHeightPx={logoHeightPx}
+          />
             <div className="hidden min-w-0 flex-1 justify-center px-2 md:flex">
               <SearchBlock className="w-full max-w-xl" />
             </div>
@@ -175,7 +206,12 @@ export function StorefrontHeaderClient({ siteName, logoUrl, categories, productC
     <HeaderShell>
       <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-4 lg:gap-4 lg:px-8">
         <div className="flex items-center gap-3 sm:gap-4 lg:gap-6">
-          <HeaderLogo siteName={siteName} logoUrl={logoUrl} />
+          <HeaderLogo
+            siteName={siteName}
+            logoUrl={logoUrl}
+            logoWidthPx={logoWidthPx}
+            logoHeightPx={logoHeightPx}
+          />
           <div className="hidden min-w-0 flex-1 justify-center px-2 md:flex">
             <SearchBlock className="w-full" />
           </div>

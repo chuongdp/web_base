@@ -1,5 +1,6 @@
 "use client";
 
+import type { CSSProperties } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { SearchBar } from "@/components/storefront/SearchBar";
@@ -45,22 +46,35 @@ function IconChevronDown(props: React.SVGProps<SVGSVGElement>) {
 export function HeaderLogo({
   siteName,
   logoUrl,
+  logoWidthPx,
+  logoHeightPx,
   className = "",
 }: {
   siteName: string;
   logoUrl: string | null;
+  logoWidthPx?: number | null;
+  logoHeightPx?: number | null;
   className?: string;
 }) {
+  const wIn = logoWidthPx && logoWidthPx > 0 ? logoWidthPx : null;
+  const hIn = logoHeightPx && logoHeightPx > 0 ? logoHeightPx : null;
+  const w = wIn ?? (hIn ? 128 : null);
+  const h = hIn ?? (wIn ? 40 : null);
+  const useCustom = w != null && h != null;
+  const boxStyle: CSSProperties | undefined = useCustom
+    ? { width: `${w}px`, height: `${h}px` }
+    : undefined;
+
   return (
     <Link href="/" className={`flex shrink-0 items-center gap-2 ${className}`}>
       {logoUrl ? (
-        <div className="relative h-9 w-32 sm:h-10 sm:w-36">
+        <div className={`relative ${useCustom ? "" : "h-9 w-32 sm:h-10 sm:w-36"}`} style={boxStyle}>
           <Image
             src={logoUrl}
             alt={siteName}
             fill
             className="object-contain object-left"
-            sizes="144px"
+            sizes={w ? `${w}px` : "144px"}
             unoptimized={logoUrl.startsWith("/")}
           />
         </div>

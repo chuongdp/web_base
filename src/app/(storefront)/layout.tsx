@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { StorefrontBannerMarquee } from "@/components/storefront/StorefrontBannerMarquee";
 import { StorefrontFooter } from "@/components/storefront/StorefrontFooter";
@@ -6,16 +5,6 @@ import { StorefrontHeaderClient } from "@/components/storefront/StorefrontHeader
 import { getMainShellClass } from "@/lib/storefront-theme";
 import { getSiteSettings } from "@/lib/site-settings";
 import { prisma } from "@/lib/prisma";
-
-export async function generateMetadata(): Promise<Metadata> {
-  const s = await getSiteSettings();
-  return {
-    title: {
-      default: s.siteName,
-      template: `%s | ${s.siteName}`,
-    },
-  };
-}
 
 export default async function StorefrontLayout({ children }: { children: ReactNode }) {
   const [s, categories, productCollections] = await Promise.all([
@@ -42,11 +31,22 @@ export default async function StorefrontLayout({ children }: { children: ReactNo
         } as React.CSSProperties
       }
     >
-      {s.bannerText ? <StorefrontBannerMarquee text={s.bannerText} /> : null}
+      {s.bannerEnabled && s.bannerText?.trim() ? (
+        <StorefrontBannerMarquee
+          text={s.bannerText.trim()}
+          backgroundColor={s.bannerBgColor}
+          textColor={s.bannerTextColor}
+          heightPx={s.bannerHeightPx}
+          fontSizePx={s.bannerFontSizePx}
+          scrollSec={s.bannerScrollSec}
+        />
+      ) : null}
 
       <StorefrontHeaderClient
         siteName={s.siteName}
         logoUrl={s.logoUrl}
+        logoWidthPx={s.logoWidthPx}
+        logoHeightPx={s.logoHeightPx}
         categories={categories}
         productCollections={productCollections}
         theme={s.storefrontTheme}

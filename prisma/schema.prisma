@@ -179,13 +179,37 @@ model OrderItem {
   @@map("order_items")
 }
 
+/// Ảnh upload qua CMS (đường dẫn public, vd /uploads/2025/03/xxx.webp)
+model MediaAsset {
+  id        String   @id @default(cuid())
+  url       String   @unique
+  filename  String
+  mimeType  String   @map("mime_type")
+  sizeBytes Int      @map("size_bytes")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("media_assets")
+}
+
 /// Cấu hình giao diện / thương hiệu (singleton: thường chỉ 1 bản ghi id = 1)
 model SiteSetting {
   id               Int      @id @default(1)
   siteName         String   @map("site_name")
   logoUrl          String?  @map("logo_url")
+  /// Icon tab trình duyệt (favicon), URL tuyệt đối hoặc /uploads/...
+  faviconUrl       String?  @map("favicon_url")
+  /// Kích thước hiển thị logo header (px), null = mặc định
+  logoWidthPx      Int?     @map("logo_width_px")
+  logoHeightPx     Int?     @map("logo_height_px")
   primaryColor     String?  @map("primary_color")
   bannerText       String?  @map("banner_text")
+  bannerEnabled    Boolean  @default(true) @map("banner_enabled")
+  bannerHeightPx   Int?     @map("banner_height_px")
+  bannerFontSizePx Int?     @map("banner_font_size_px")
+  bannerBgColor    String?  @map("banner_bg_color")
+  bannerTextColor  String?  @map("banner_text_color")
+  /// Thời gian một vòng chạy chữ (giây); null = 32
+  bannerScrollSec  Float?   @map("banner_scroll_sec")
   /// Tiền tệ mặc định cho sản phẩm mới / hiển thị cửa hàng
   defaultCurrency  Currency @default(USD) @map("default_currency")
   /// Preset bố cục / typography / bo góc storefront.
@@ -196,6 +220,8 @@ model SiteSetting {
   heroButtonLink       String? @map("hero_button_link")
   heroImageUrl         String? @map("hero_image_url")
   heroOverlayImageUrl  String? @map("hero_overlay_image_url")
+  heroImageWidthPx     Int?    @map("hero_image_width_px")
+  heroImageHeightPx    Int?    @map("hero_image_height_px")
 
   aboutHeroTitle          String? @map("about_hero_title")
   aboutWhoTitle           String? @map("about_who_title")
@@ -210,6 +236,8 @@ model SiteSetting {
   aboutBlock3Title        String? @map("about_block3_title")
   aboutBlock3Body         String? @map("about_block3_body")
   aboutBlock3ImageUrl     String? @map("about_block3_image_url")
+  aboutBlockImageWidthPx  Int?    @map("about_block_image_width_px")
+  aboutBlockImageHeightPx Int?    @map("about_block_image_height_px")
   aboutBestSellersTitle   String? @map("about_best_sellers_title")
   galleryHeading          String? @map("gallery_heading")
   gallerySubtitle         String? @map("gallery_subtitle")

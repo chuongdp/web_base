@@ -1,14 +1,19 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { getSiteSettings } from "@/lib/site-settings";
 import { Providers } from "./providers";
 import "./globals.css";
 
-export const metadata: Metadata = {
-  title: {
-    default: "Store",
-    template: "%s",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const s = await getSiteSettings();
+  return {
+    title: {
+      default: s.siteName,
+      template: `%s | ${s.siteName}`,
+    },
+    icons: s.faviconUrl ? { icon: [{ url: s.faviconUrl }] } : undefined,
+  };
+}
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
