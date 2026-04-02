@@ -1,3 +1,4 @@
+import { ChangePasswordForm } from "@/components/admin/ChangePasswordForm";
 import { SiteSettingsForm } from "@/components/admin/SiteSettingsForm";
 import { getSiteSetting } from "@/app/actions/settingActions";
 
@@ -92,7 +93,8 @@ export default async function AdminSettingsPage() {
       <p className="mt-1 text-sm text-zinc-600">
         Branding, home hero, About Us and Contact content for the storefront.
       </p>
-      <div className="mt-8">
+      <div className="mt-8 space-y-8">
+        <ChangePasswordForm />
         <SiteSettingsForm initial={initial} />
       </div>
     </div>
