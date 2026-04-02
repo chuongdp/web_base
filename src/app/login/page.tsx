@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Suspense, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
@@ -7,6 +8,7 @@ import { useSearchParams } from "next/navigation";
 function LoginForm() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/admin/settings";
+  const registered = searchParams.get("registered") === "1";
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
 
@@ -39,10 +41,11 @@ function LoginForm() {
     <div className="mx-auto w-full max-w-sm rounded-lg border border-zinc-200 bg-white p-8 shadow-sm">
       <h1 className="text-center text-xl font-semibold text-zinc-900">Admin sign in</h1>
       <p className="mt-1 text-center text-sm text-zinc-500">Use your admin account</p>
-      <p className="mt-2 rounded-md bg-zinc-50 px-2 py-1.5 text-center text-xs text-zinc-600">
-        Local test: <code className="font-mono">admin@local.com</code> /{" "}
-        <code className="font-mono">123456</code>
-      </p>
+      {registered ? (
+        <p className="mt-3 rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-center text-sm text-emerald-800">
+          Account created. You can sign in now.
+        </p>
+      ) : null}
 
       <form onSubmit={handleSubmit} className="mt-6 space-y-4">
         <div>
@@ -55,7 +58,6 @@ function LoginForm() {
             type="email"
             autoComplete="username"
             required
-            defaultValue="admin@local.com"
             className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm shadow-sm focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500"
           />
         </div>
@@ -83,6 +85,16 @@ function LoginForm() {
           {pending ? "Signing in…" : "Sign in"}
         </button>
       </form>
+
+      <p className="mt-6 text-center text-sm text-zinc-600">
+        No account?{" "}
+        <Link
+          href="/login/register"
+          className="font-medium text-zinc-900 underline underline-offset-2 hover:text-zinc-700"
+        >
+          Create one
+        </Link>
+      </p>
     </div>
   );
 }

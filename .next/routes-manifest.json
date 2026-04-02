@@ -144,6 +144,12 @@
       "namedRegex": "^/login(?:/)?$"
     },
     {
+      "page": "/login/register",
+      "regex": "^/login/register(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/login/register(?:/)?$"
+    },
+    {
       "page": "/search",
       "regex": "^/search(?:/)?$",
       "routeKeys": {},
