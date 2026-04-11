@@ -16,7 +16,7 @@ export const ABOUT_CONTENT_DEFAULTS = {
   block3Body:
     "Our design team drops fresh graphics, cuts, and colorways weekly—so there's always something new to discover. Stay tuned for limited runs and collaborations with artists we love.",
   bestSellersTitle: "Best Sellers",
-  galleryHeading: "Follow Us @NerdyShirts",
+  galleryHeading: "Follow Us",
   gallerySubtitle: "Customer Gallery — inspiration from the community.",
 } as const;
 

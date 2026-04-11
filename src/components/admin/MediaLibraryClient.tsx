@@ -78,7 +78,7 @@ export function MediaLibraryClient({ items: initialItems }: Props) {
           <input
             ref={inputRef}
             type="file"
-            accept="image/jpeg,image/png,image/gif,image/webp,image/svg+xml,image/x-icon,.ico"
+            accept="image/jpeg,image/png,image/gif,image/webp,image/svg+xml,image/x-icon,image/vnd.microsoft.icon,.jpg,.jpeg,.png,.gif,.webp,.svg,.ico"
             className="hidden"
             onChange={onFileChange}
             disabled={pending}

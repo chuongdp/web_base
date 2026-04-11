@@ -38,6 +38,7 @@ export type SiteSettingsInitial = {
   aboutBestSellersTitle: string;
   galleryHeading: string;
   gallerySubtitle: string;
+  galleryImageUrls: string;
   contactPageTitle: string;
   contactIntro: string;
   contactEmail: string;
@@ -121,7 +122,7 @@ export function SiteSettingsForm({ initial }: Props) {
     setMessage({ kind: "err", text: result.message });
   }
 
-  const formKey = `${initial.storefrontTheme}-${initial.primaryColor}-${initial.siteName}-${initial.defaultCurrency}-${initial.logoUrl}-${initial.faviconUrl}-${initial.footerMetaShopOwner}-${initial.footerMetaAddress}-${initial.footerMetaEmail}-${initial.footerMetaHours}`;
+  const formKey = `${initial.storefrontTheme}-${initial.primaryColor}-${initial.siteName}-${initial.defaultCurrency}-${initial.logoUrl}-${initial.faviconUrl}-${initial.footerMetaShopOwner}-${initial.footerMetaAddress}-${initial.footerMetaEmail}-${initial.footerMetaHours}-${initial.galleryImageUrls}`;
 
   const currentMeta = SECTIONS.find((s) => s.id === active);
 
@@ -800,6 +801,25 @@ export function SiteSettingsForm({ initial }: Props) {
               defaultValue={initial.gallerySubtitle}
               className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-sm shadow-sm"
             />
+          </div>
+          <div className="sm:col-span-2">
+            <label htmlFor="galleryImageUrls" className="mb-1.5 block text-sm font-medium text-zinc-700">
+              Gallery — URL ảnh (6 dòng, mỗi dòng một URL)
+            </label>
+            <textarea
+              id="galleryImageUrls"
+              name="galleryImageUrls"
+              rows={8}
+              placeholder={
+                "https://…\nhttps://…\n… (tối đa 6 dòng; ít hơn sẽ bù ảnh mẫu)\nHoặc /uploads/… sau khi upload Media"
+              }
+              defaultValue={initial.galleryImageUrls}
+              className="w-full resize-y rounded-lg border border-zinc-300 bg-white px-3 py-2.5 font-mono text-sm shadow-sm"
+            />
+            <p className="mt-1.5 text-xs text-zinc-500">
+              Không ghi gì ở đây thì dùng bộ ảnh mặc định. Tiêu đề / mô tả phụ chỉnh ở hai ô phía trên (vd «Follow Us
+              @tên_shop»).
+            </p>
           </div>
         </div>
 

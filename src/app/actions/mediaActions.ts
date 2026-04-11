@@ -7,6 +7,7 @@ import {
   isAllowedImageMime,
   MAX_MEDIA_BYTES,
   removePublicFile,
+  resolveImageMime,
   saveUploadedImage,
 } from "@/lib/media-storage";
 import { requireAdminSession } from "@/lib/admin-auth";
@@ -37,22 +38,22 @@ export async function uploadMediaAction(formData: FormData): Promise<UploadMedia
   }
 
   const file = formData.get("file");
-  if (!(file instanceof File) || file.size === 0) {
+  if (!(file instanceof Blob) || file.size === 0) {
     return { ok: false, message: "Chọn file ảnh." };
   }
   if (file.size > MAX_MEDIA_BYTES) {
     return { ok: false, message: "File tối đa 5 MB." };
   }
 
-  const mime = file.type || "application/octet-stream";
-  if (!isAllowedImageMime(mime)) {
+  const buf = Buffer.from(await file.arrayBuffer());
+  const name = file instanceof File ? file.name : undefined;
+  const mime = resolveImageMime(file, buf, name);
+  if (!mime) {
     return { ok: false, message: "Chỉ chấp nhận JPEG, PNG, GIF, WebP, SVG, ICO." };
   }
   if (!extensionForMime(mime)) {
     return { ok: false, message: "Định dạng ảnh không hợp lệ." };
   }
-
-  const buf = Buffer.from(await file.arrayBuffer());
   const { publicUrl, filename } = await saveUploadedImage(buf, mime);
 
   await prisma.mediaAsset.create({

@@ -241,6 +241,8 @@ model SiteSetting {
   aboutBestSellersTitle   String? @map("about_best_sellers_title")
   galleryHeading          String? @map("gallery_heading")
   gallerySubtitle         String? @map("gallery_subtitle")
+  /// About Us — Follow Us gallery: mỗi dòng một URL ảnh (6 dòng); thiếu sẽ bù ảnh mặc định
+  galleryImageUrls        String? @map("gallery_image_urls")
 
   contactPageTitle  String? @map("contact_page_title")
   contactIntro      String? @map("contact_intro")

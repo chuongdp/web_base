@@ -1,7 +1,7 @@
 import Image from "next/image";
 
-/** Ảnh chuẩn (Unsplash, cố định) — áo trắng, treo đồ, chân dung, street, community, banner rộng. */
-const GALLERY: readonly { src: string; alt: string }[] = [
+/** Ảnh mặc định khi CMS không nhập đủ 6 URL (Unsplash). */
+const FALLBACK_GALLERY: readonly { src: string; alt: string }[] = [
   {
     src: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=1200&q=85&auto=format&fit=crop",
     alt: "White tee — fabric and fit",
@@ -28,6 +28,20 @@ const GALLERY: readonly { src: string; alt: string }[] = [
   },
 ];
 
+/** Parse CMS: mỗi dòng một URL; cần 6 ảnh — thiếu lấy từ FALLBACK. */
+export function buildGalleryItems(imageUrlsText: string | null | undefined): { src: string; alt: string }[] {
+  const lines = imageUrlsText
+    ?.split(/\r?\n/)
+    .map((s) => s.trim())
+    .filter(Boolean) ?? [];
+  const out: { src: string; alt: string }[] = [];
+  for (let i = 0; i < 6; i++) {
+    const src = lines[i] ?? FALLBACK_GALLERY[i].src;
+    out.push({ src, alt: `Gallery ${i + 1}` });
+  }
+  return out;
+}
+
 function InstagramIcon({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
@@ -49,6 +63,7 @@ function GalleryTile({
   sizes: string;
   priority?: boolean;
 }) {
+  const local = src.startsWith("/") && !src.startsWith("//");
   return (
     <div
       className={`group relative overflow-hidden rounded-xl bg-zinc-100 ring-1 ring-zinc-200/80 ${className ?? ""}`}
@@ -59,6 +74,7 @@ function GalleryTile({
         fill
         sizes={sizes}
         priority={priority}
+        unoptimized={local}
         className="object-cover transition-opacity duration-300 group-hover:opacity-80"
       />
       <div
@@ -75,11 +91,14 @@ function GalleryTile({
 type GalleryProps = {
   heading?: string | null;
   subtitle?: string | null;
+  /** Mỗi dòng một URL ảnh (tối đa 6); thiếu bù ảnh mặc định */
+  imageUrlsText?: string | null;
 };
 
-export function CustomerGallery({ heading, subtitle }: GalleryProps) {
-  const [g1, g2, g3, g4, g5, g6] = GALLERY;
-  const title = heading?.trim() || "Follow Us @NerdyShirts";
+export function CustomerGallery({ heading, subtitle, imageUrlsText }: GalleryProps) {
+  const items = buildGalleryItems(imageUrlsText);
+  const [g1, g2, g3, g4, g5, g6] = items;
+  const title = heading?.trim() || "Follow Us";
   const sub = subtitle?.trim() || "Customer Gallery — inspiration from the community.";
 
   return (
@@ -93,7 +112,6 @@ export function CustomerGallery({ heading, subtitle }: GalleryProps) {
       <p className="mt-2 text-center text-sm text-zinc-600">{sub}</p>
 
       <div className="mt-10 flex flex-col gap-4 md:gap-6">
-        {/* Lưới trên: 4 cột — ô 1 chiếm 2×2; bốn ô còn lại 2×2 */}
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:grid-rows-2 md:gap-6">
           <GalleryTile
             src={g1.src}
@@ -128,13 +146,13 @@ export function CustomerGallery({ heading, subtitle }: GalleryProps) {
           />
         </div>
 
-        {/* Ảnh rộng dưới — hẹp hơn lưới trên, căn giữa */}
         <div className="group relative mx-auto aspect-[21/9] w-full max-w-4xl overflow-hidden rounded-xl bg-zinc-100 ring-1 ring-zinc-200/80">
           <Image
             src={g6.src}
             alt={g6.alt}
             fill
             sizes="(max-width: 896px) 100vw, 896px"
+            unoptimized={g6.src.startsWith("/") && !g6.src.startsWith("//")}
             className="object-cover transition-opacity duration-300 group-hover:opacity-80"
           />
           <div

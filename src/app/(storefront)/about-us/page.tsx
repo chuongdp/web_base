@@ -118,7 +118,11 @@ export default async function AboutUsPage() {
 
       <section className="bg-white px-4 py-16 md:py-20 lg:px-0">
         <div className="mx-auto max-w-7xl">
-          <CustomerGallery heading={s?.galleryHeading} subtitle={s?.gallerySubtitle} />
+          <CustomerGallery
+            heading={s?.galleryHeading}
+            subtitle={s?.gallerySubtitle}
+            imageUrlsText={s?.galleryImageUrls}
+          />
         </div>
       </section>
 

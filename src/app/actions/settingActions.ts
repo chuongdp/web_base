@@ -42,6 +42,16 @@ function optStr(formData: FormData, key: string): string | null {
   return v.length > 0 ? v : null;
 }
 
+/** Mỗi dòng một giá trị (URL); bỏ dòng trống. */
+function optMultiline(formData: FormData, key: string): string | null {
+  const lines = String(formData.get(key) ?? "")
+    .replace(/\r\n/g, "\n")
+    .split("\n")
+    .map((l) => l.trim())
+    .filter(Boolean);
+  return lines.length > 0 ? lines.join("\n") : null;
+}
+
 function optPositiveInt(formData: FormData, key: string): number | null {
   const t = String(formData.get(key) ?? "").trim();
   if (!t) return null;
@@ -116,6 +126,7 @@ export async function updateSiteSetting(formData: FormData): Promise<UpdateSiteS
   const aboutBestSellersTitle = optStr(formData, "aboutBestSellersTitle");
   const galleryHeading = optStr(formData, "galleryHeading");
   const gallerySubtitle = optStr(formData, "gallerySubtitle");
+  const galleryImageUrls = optMultiline(formData, "galleryImageUrls");
 
   const contactPageTitle = optStr(formData, "contactPageTitle");
   const contactIntro = optStr(formData, "contactIntro");
@@ -239,6 +250,7 @@ export async function updateSiteSetting(formData: FormData): Promise<UpdateSiteS
       aboutBestSellersTitle,
       galleryHeading,
       gallerySubtitle,
+      galleryImageUrls,
       contactPageTitle,
       contactIntro,
       contactEmail,
@@ -292,6 +304,7 @@ export async function updateSiteSetting(formData: FormData): Promise<UpdateSiteS
       aboutBestSellersTitle,
       galleryHeading,
       gallerySubtitle,
+      galleryImageUrls,
       contactPageTitle,
       contactIntro,
       contactEmail,
