@@ -60,7 +60,14 @@ export default async function StorefrontLayout({ children }: { children: ReactNo
 
       <main className={`sf-main mx-auto w-full min-w-0 flex-1 ${getMainShellClass(s.storefrontTheme)}`}>{children}</main>
 
-      <StorefrontFooter siteName={s.siteName} theme={s.storefrontTheme} footerMeta={footerMeta} />
+      <StorefrontFooter
+        siteName={s.siteName}
+        theme={s.storefrontTheme}
+        footerMeta={footerMeta}
+        logoUrl={s.logoUrl}
+        logoWidthPx={s.logoWidthPx}
+        logoHeightPx={s.logoHeightPx}
+      />
     </div>
   );
 }

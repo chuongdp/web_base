@@ -47,6 +47,9 @@ RUN mkdir -p /opt/prisma-cli && cd /opt/prisma-cli && \
 COPY docker-entrypoint.sh /app/docker-entrypoint.sh
 RUN chmod +x /app/docker-entrypoint.sh
 
+# Cho phép user nextjs ghi ISR / cache runtime (tránh EACCES trên .next/cache, .next/server)
+RUN chown -R nextjs:nodejs /app
+
 EXPOSE 3000
 
 ENTRYPOINT ["/app/docker-entrypoint.sh"]

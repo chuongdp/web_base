@@ -2,6 +2,8 @@ import type { StorefrontTheme } from "@prisma/client";
 import Link from "next/link";
 import { getFooterLayoutMode } from "@/lib/storefront-theme";
 
+type FooterLogoProps = { logoUrl: string | null; logoWidthPx: number | null; logoHeightPx: number | null };
+
 export type FooterMetaStrip = {
   shopOwner: string;
   address: string;
@@ -9,7 +11,11 @@ export type FooterMetaStrip = {
   hours: string;
 };
 
-type Props = { siteName: string; theme: StorefrontTheme; footerMeta: FooterMetaStrip };
+type Props = {
+  siteName: string;
+  theme: StorefrontTheme;
+  footerMeta: FooterMetaStrip;
+} & FooterLogoProps;
 
 function ShopLinks() {
   const link = "transition hover:text-zinc-900";
@@ -95,33 +101,31 @@ function SupportLinks() {
   );
 }
 
-function NewsletterBlock({ siteName }: { siteName: string }) {
+function NewsletterBlock({ siteName, logoUrl, logoWidthPx, logoHeightPx }: { siteName: string } & FooterLogoProps) {
+  const wIn = logoWidthPx && logoWidthPx > 0 ? logoWidthPx : null;
+  const hIn = logoHeightPx && logoHeightPx > 0 ? logoHeightPx : null;
+  const maxH = hIn ?? 64;
+  const maxW = wIn ?? 240;
+
   return (
     <div className="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-zinc-100">
       <p className="font-serif text-2xl font-semibold tracking-tight text-zinc-900">{siteName}</p>
-      <p className="mt-3 text-sm leading-relaxed text-zinc-600">
-        Subscribe to our newsletter and get the latest updates straight to your inbox.
-      </p>
-      <form className="mt-6 flex max-w-md items-stretch gap-0 overflow-hidden rounded-full border border-zinc-200 bg-zinc-50 pl-4">
-        <label htmlFor="footer-email" className="sr-only">
-          Email
-        </label>
-        <input
-          id="footer-email"
-          type="email"
-          placeholder="Email address..."
-          className="min-w-0 flex-1 bg-transparent py-3 text-sm text-zinc-800 outline-none placeholder:text-zinc-400"
-          readOnly
-          aria-readonly
-        />
-        <button
-          type="button"
-          className="shrink-0 rounded-full px-6 py-3 text-sm font-semibold text-white transition hover:opacity-90"
-          style={{ backgroundColor: "var(--sf-primary)" }}
-        >
-          Join
-        </button>
-      </form>
+      <div className="mt-5">
+        {logoUrl ? (
+          <Link href="/" className="inline-block max-w-full outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-zinc-400">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={logoUrl}
+              alt={siteName}
+              className="object-contain object-left"
+              style={{ maxHeight: maxH, maxWidth: maxW, width: "auto", height: "auto" }}
+              decoding="async"
+            />
+          </Link>
+        ) : (
+          <p className="text-sm text-zinc-500">Thêm logo trong Admin → Cài đặt → Chung &amp; thương hiệu.</p>
+        )}
+      </div>
     </div>
   );
 }
@@ -151,26 +155,27 @@ function FooterMetaGrid({ meta }: { meta: FooterMetaStrip }) {
   );
 }
 
-function PaymentBadges() {
-  return (
-    <div className="flex flex-wrap items-center justify-center gap-2">
-      {["PayPal", "MC", "Discover", "Amex", "Visa"].map((label) => (
-        <span
-          key={label}
-          className="rounded border border-zinc-200 bg-white px-2 py-1 text-[10px] font-semibold uppercase text-zinc-600"
-        >
-          {label}
-        </span>
-      ))}
-    </div>
-  );
-}
-
-function FooterCards({ siteName, year, footerMeta }: { siteName: string; year: number; footerMeta: FooterMetaStrip }) {
+function FooterCards({
+  siteName,
+  year,
+  footerMeta,
+  logoUrl,
+  logoWidthPx,
+  logoHeightPx,
+}: {
+  siteName: string;
+  year: number;
+  footerMeta: FooterMetaStrip;
+} & FooterLogoProps) {
   return (
     <>
       <div className="grid gap-6 lg:grid-cols-3 lg:gap-8">
-        <NewsletterBlock siteName={siteName} />
+        <NewsletterBlock
+          siteName={siteName}
+          logoUrl={logoUrl}
+          logoWidthPx={logoWidthPx}
+          logoHeightPx={logoHeightPx}
+        />
 
         <div className="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-zinc-100 lg:col-span-2">
           <div className="grid gap-8 sm:grid-cols-3">
@@ -198,11 +203,10 @@ function FooterCards({ siteName, year, footerMeta }: { siteName: string; year: n
 
       <FooterMetaGrid meta={footerMeta} />
 
-      <div className="mt-8 flex flex-col items-center justify-between gap-4 border-t border-zinc-200 pt-8 sm:flex-row">
-        <p className="text-center text-[11px] font-medium uppercase tracking-wide text-zinc-500">
+      <div className="mt-8 border-t border-zinc-200 pt-8">
+        <p className="text-center text-[11px] font-medium uppercase tracking-wide text-zinc-500 sm:text-left">
           © {year} {siteName}. All rights reserved.
         </p>
-        <PaymentBadges />
       </div>
     </>
   );
@@ -257,9 +261,8 @@ function FooterMagazine({ siteName, year }: { siteName: string; year: number }) 
           </form>
         </div>
       </div>
-      <div className="flex flex-col items-center justify-between gap-6 border-t border-zinc-200 pt-8 sm:flex-row">
-        <p className="text-xs text-zinc-500">© {year} {siteName}</p>
-        <PaymentBadges />
+      <div className="border-t border-zinc-200 pt-8">
+        <p className="text-center text-xs text-zinc-500 sm:text-left">© {year} {siteName}</p>
       </div>
     </>
   );
@@ -324,15 +327,12 @@ function FooterStrip({ siteName, year }: { siteName: string; year: number }) {
           Legal
         </Link>
       </nav>
-      <div className="flex flex-wrap items-center gap-4 lg:justify-end">
-        <p className="text-xs text-zinc-500">© {year}</p>
-        <PaymentBadges />
-      </div>
+      <p className="text-xs text-zinc-500 lg:text-right">© {year}</p>
     </div>
   );
 }
 
-export function StorefrontFooter({ siteName, theme, footerMeta }: Props) {
+export function StorefrontFooter({ siteName, theme, footerMeta, logoUrl, logoWidthPx, logoHeightPx }: Props) {
   const year = new Date().getFullYear();
   const mode = getFooterLayoutMode(theme);
 
@@ -348,7 +348,16 @@ export function StorefrontFooter({ siteName, theme, footerMeta }: Props) {
         {mode === "magazine" ? <FooterMagazine siteName={siteName} year={year} /> : null}
         {mode === "minimal" ? <FooterMinimal siteName={siteName} year={year} /> : null}
         {mode === "strip" ? <FooterStrip siteName={siteName} year={year} /> : null}
-        {mode === "cards" ? <FooterCards siteName={siteName} year={year} footerMeta={footerMeta} /> : null}
+        {mode === "cards" ? (
+          <FooterCards
+            siteName={siteName}
+            year={year}
+            footerMeta={footerMeta}
+            logoUrl={logoUrl}
+            logoWidthPx={logoWidthPx}
+            logoHeightPx={logoHeightPx}
+          />
+        ) : null}
       </div>
     </footer>
   );

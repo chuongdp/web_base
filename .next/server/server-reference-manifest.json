@@ -2,6 +2,10 @@
   "node": {
     "00b9eea7d22b21c4810fd4dec791498cf17b5d0ee6": {
       "workers": {
+        "app/(storefront)/product/[id]/page": {
+          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CsettingActions.ts%22%2C%5B%7B%22id%22%3A%2200b9eea7d22b21c4810fd4dec791498cf17b5d0ee6%22%2C%22exportedName%22%3A%22getSiteSetting%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CsettingActions.ts%22%7D%2C%7B%22id%22%3A%224026a4b53bb1865a4be402193063e8f98d3d8619a7%22%2C%22exportedName%22%3A%22updateSiteSetting%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CsettingActions.ts%22%7D%2C%7B%22id%22%3A%224068f9819ce43a856d688f03e53e85a5ea1b1fcaae%22%2C%22exportedName%22%3A%22getProductById%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CsettingActions.ts%22%7D%5D%5D%5D&__client_imported__=!",
+          "async": false
+        },
         "app/(storefront)/page": {
           "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CsettingActions.ts%22%2C%5B%7B%22id%22%3A%2200b9eea7d22b21c4810fd4dec791498cf17b5d0ee6%22%2C%22exportedName%22%3A%22getSiteSetting%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CsettingActions.ts%22%7D%2C%7B%22id%22%3A%224026a4b53bb1865a4be402193063e8f98d3d8619a7%22%2C%22exportedName%22%3A%22updateSiteSetting%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CsettingActions.ts%22%7D%2C%7B%22id%22%3A%224068f9819ce43a856d688f03e53e85a5ea1b1fcaae%22%2C%22exportedName%22%3A%22getProductById%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CsettingActions.ts%22%7D%5D%5D%5D&__client_imported__=!",
           "async": false
@@ -12,6 +16,7 @@
         }
       },
       "layer": {
+        "app/(storefront)/product/[id]/page": "rsc",
         "app/(storefront)/page": "rsc",
         "app/admin/settings/page": "rsc"
       },
@@ -20,6 +25,10 @@
     },
     "4026a4b53bb1865a4be402193063e8f98d3d8619a7": {
       "workers": {
+        "app/(storefront)/product/[id]/page": {
+          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CsettingActions.ts%22%2C%5B%7B%22id%22%3A%2200b9eea7d22b21c4810fd4dec791498cf17b5d0ee6%22%2C%22exportedName%22%3A%22getSiteSetting%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CsettingActions.ts%22%7D%2C%7B%22id%22%3A%224026a4b53bb1865a4be402193063e8f98d3d8619a7%22%2C%22exportedName%22%3A%22updateSiteSetting%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CsettingActions.ts%22%7D%2C%7B%22id%22%3A%224068f9819ce43a856d688f03e53e85a5ea1b1fcaae%22%2C%22exportedName%22%3A%22getProductById%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CsettingActions.ts%22%7D%5D%5D%5D&__client_imported__=!",
+          "async": false
+        },
         "app/(storefront)/page": {
           "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CsettingActions.ts%22%2C%5B%7B%22id%22%3A%2200b9eea7d22b21c4810fd4dec791498cf17b5d0ee6%22%2C%22exportedName%22%3A%22getSiteSetting%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CsettingActions.ts%22%7D%2C%7B%22id%22%3A%224026a4b53bb1865a4be402193063e8f98d3d8619a7%22%2C%22exportedName%22%3A%22updateSiteSetting%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CsettingActions.ts%22%7D%2C%7B%22id%22%3A%224068f9819ce43a856d688f03e53e85a5ea1b1fcaae%22%2C%22exportedName%22%3A%22getProductById%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CsettingActions.ts%22%7D%5D%5D%5D&__client_imported__=!",
           "async": false
@@ -30,6 +39,7 @@
         }
       },
       "layer": {
+        "app/(storefront)/product/[id]/page": "rsc",
         "app/(storefront)/page": "rsc",
         "app/admin/settings/page": "rsc"
       },
@@ -38,6 +48,10 @@
     },
     "4068f9819ce43a856d688f03e53e85a5ea1b1fcaae": {
       "workers": {
+        "app/(storefront)/product/[id]/page": {
+          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CsettingActions.ts%22%2C%5B%7B%22id%22%3A%2200b9eea7d22b21c4810fd4dec791498cf17b5d0ee6%22%2C%22exportedName%22%3A%22getSiteSetting%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CsettingActions.ts%22%7D%2C%7B%22id%22%3A%224026a4b53bb1865a4be402193063e8f98d3d8619a7%22%2C%22exportedName%22%3A%22updateSiteSetting%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CsettingActions.ts%22%7D%2C%7B%22id%22%3A%224068f9819ce43a856d688f03e53e85a5ea1b1fcaae%22%2C%22exportedName%22%3A%22getProductById%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CsettingActions.ts%22%7D%5D%5D%5D&__client_imported__=!",
+          "async": false
+        },
         "app/(storefront)/page": {
           "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CsettingActions.ts%22%2C%5B%7B%22id%22%3A%2200b9eea7d22b21c4810fd4dec791498cf17b5d0ee6%22%2C%22exportedName%22%3A%22getSiteSetting%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CsettingActions.ts%22%7D%2C%7B%22id%22%3A%224026a4b53bb1865a4be402193063e8f98d3d8619a7%22%2C%22exportedName%22%3A%22updateSiteSetting%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CsettingActions.ts%22%7D%2C%7B%22id%22%3A%224068f9819ce43a856d688f03e53e85a5ea1b1fcaae%22%2C%22exportedName%22%3A%22getProductById%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CsettingActions.ts%22%7D%5D%5D%5D&__client_imported__=!",
           "async": false
@@ -48,31 +62,35 @@
         }
       },
       "layer": {
+        "app/(storefront)/product/[id]/page": "rsc",
         "app/(storefront)/page": "rsc",
         "app/admin/settings/page": "rsc"
       },
       "filename": "../D:\\InternalTools\\web_base\\src\\app\\actions\\settingActions.ts",
       "exportedName": "getProductById"
     },
+    "606305c20e4142e8fffa72fdc3642c4f4a7727d413": {
+      "workers": {
+        "app/login/register/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CregisterAction.ts%22%2C%5B%7B%22id%22%3A%22606305c20e4142e8fffa72fdc3642c4f4a7727d413%22%2C%22exportedName%22%3A%22registerAction%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CregisterAction.ts%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/login/register/page": "action-browser"
+      },
+      "filename": "../D:\\InternalTools\\web_base\\src\\app\\actions\\registerAction.ts",
+      "exportedName": "registerAction"
+    },
     "00fa79f08c838c2d9eb5f98831b9b6f5ffe1b0fe13": {
       "workers": {
         "app/admin/settings/page": {
           "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cadmin%5C%5Csign-out-action.ts%22%2C%5B%7B%22id%22%3A%2200fa79f08c838c2d9eb5f98831b9b6f5ffe1b0fe13%22%2C%22exportedName%22%3A%22signOutAction%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cadmin%5C%5Csign-out-action.ts%22%7D%5D%5D%2C%5B%22D%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CchangePasswordAction.ts%22%2C%5B%7B%22id%22%3A%22607281aeb628b950d46733427f0843d18de8fdf83e%22%2C%22exportedName%22%3A%22changePasswordAction%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CchangePasswordAction.ts%22%7D%5D%5D%2C%5B%22D%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CmediaActions.ts%22%2C%5B%7B%22id%22%3A%2200d34fa5874576ba9256d9bbdec5c81d5a5420a37b%22%2C%22exportedName%22%3A%22listMediaAssets%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CmediaActions.ts%22%7D%2C%7B%22id%22%3A%22408eff78a708ee81bbfad4e90924c0897aa84a461e%22%2C%22exportedName%22%3A%22deleteMediaAction%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CmediaActions.ts%22%7D%2C%7B%22id%22%3A%2240c75b9ba2d65b944d4eb1d29f1e5ac660bdc335eb%22%2C%22exportedName%22%3A%22uploadMediaAction%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CmediaActions.ts%22%7D%5D%5D%5D&__client_imported__=true!",
           "async": false
-        },
-        "app/admin/collections/page": {
-          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cadmin%5C%5Csign-out-action.ts%22%2C%5B%7B%22id%22%3A%2200fa79f08c838c2d9eb5f98831b9b6f5ffe1b0fe13%22%2C%22exportedName%22%3A%22signOutAction%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cadmin%5C%5Csign-out-action.ts%22%7D%5D%5D%2C%5B%22D%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cadmin%5C%5Ccollections%5C%5Cactions.ts%22%2C%5B%7B%22id%22%3A%22404175155be8d6980de36968bd9c822e7f1d742fb8%22%2C%22exportedName%22%3A%22updateCollectionConfig%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cadmin%5C%5Ccollections%5C%5Cactions.ts%22%7D%5D%5D%5D&__client_imported__=true!",
-          "async": false
-        },
-        "app/admin/media/page": {
-          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cadmin%5C%5Csign-out-action.ts%22%2C%5B%7B%22id%22%3A%2200fa79f08c838c2d9eb5f98831b9b6f5ffe1b0fe13%22%2C%22exportedName%22%3A%22signOutAction%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cadmin%5C%5Csign-out-action.ts%22%7D%5D%5D%5D&__client_imported__=true!",
-          "async": false
         }
       },
       "layer": {
-        "app/admin/settings/page": "action-browser",
-        "app/admin/collections/page": "action-browser",
-        "app/admin/media/page": "action-browser"
+        "app/admin/settings/page": "action-browser"
       },
       "filename": "../D:\\InternalTools\\web_base\\src\\app\\admin\\sign-out-action.ts",
       "exportedName": "signOutAction"
@@ -95,15 +113,10 @@
         "app/admin/settings/page": {
           "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cadmin%5C%5Csign-out-action.ts%22%2C%5B%7B%22id%22%3A%2200fa79f08c838c2d9eb5f98831b9b6f5ffe1b0fe13%22%2C%22exportedName%22%3A%22signOutAction%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cadmin%5C%5Csign-out-action.ts%22%7D%5D%5D%2C%5B%22D%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CchangePasswordAction.ts%22%2C%5B%7B%22id%22%3A%22607281aeb628b950d46733427f0843d18de8fdf83e%22%2C%22exportedName%22%3A%22changePasswordAction%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CchangePasswordAction.ts%22%7D%5D%5D%2C%5B%22D%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CmediaActions.ts%22%2C%5B%7B%22id%22%3A%2200d34fa5874576ba9256d9bbdec5c81d5a5420a37b%22%2C%22exportedName%22%3A%22listMediaAssets%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CmediaActions.ts%22%7D%2C%7B%22id%22%3A%22408eff78a708ee81bbfad4e90924c0897aa84a461e%22%2C%22exportedName%22%3A%22deleteMediaAction%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CmediaActions.ts%22%7D%2C%7B%22id%22%3A%2240c75b9ba2d65b944d4eb1d29f1e5ac660bdc335eb%22%2C%22exportedName%22%3A%22uploadMediaAction%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CmediaActions.ts%22%7D%5D%5D%5D&__client_imported__=true!",
           "async": false
-        },
-        "app/admin/media/page": {
-          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CmediaActions.ts%22%2C%5B%7B%22id%22%3A%2200d34fa5874576ba9256d9bbdec5c81d5a5420a37b%22%2C%22exportedName%22%3A%22listMediaAssets%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CmediaActions.ts%22%7D%2C%7B%22id%22%3A%22408eff78a708ee81bbfad4e90924c0897aa84a461e%22%2C%22exportedName%22%3A%22deleteMediaAction%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CmediaActions.ts%22%7D%2C%7B%22id%22%3A%2240c75b9ba2d65b944d4eb1d29f1e5ac660bdc335eb%22%2C%22exportedName%22%3A%22uploadMediaAction%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CmediaActions.ts%22%7D%5D%5D%5D&__client_imported__=!",
-          "async": false
         }
       },
       "layer": {
-        "app/admin/settings/page": "action-browser",
-        "app/admin/media/page": "rsc"
+        "app/admin/settings/page": "action-browser"
       },
       "filename": "../D:\\InternalTools\\web_base\\src\\app\\actions\\mediaActions.ts",
       "exportedName": "listMediaAssets"
@@ -113,15 +126,10 @@
         "app/admin/settings/page": {
           "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cadmin%5C%5Csign-out-action.ts%22%2C%5B%7B%22id%22%3A%2200fa79f08c838c2d9eb5f98831b9b6f5ffe1b0fe13%22%2C%22exportedName%22%3A%22signOutAction%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cadmin%5C%5Csign-out-action.ts%22%7D%5D%5D%2C%5B%22D%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CchangePasswordAction.ts%22%2C%5B%7B%22id%22%3A%22607281aeb628b950d46733427f0843d18de8fdf83e%22%2C%22exportedName%22%3A%22changePasswordAction%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CchangePasswordAction.ts%22%7D%5D%5D%2C%5B%22D%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CmediaActions.ts%22%2C%5B%7B%22id%22%3A%2200d34fa5874576ba9256d9bbdec5c81d5a5420a37b%22%2C%22exportedName%22%3A%22listMediaAssets%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CmediaActions.ts%22%7D%2C%7B%22id%22%3A%22408eff78a708ee81bbfad4e90924c0897aa84a461e%22%2C%22exportedName%22%3A%22deleteMediaAction%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CmediaActions.ts%22%7D%2C%7B%22id%22%3A%2240c75b9ba2d65b944d4eb1d29f1e5ac660bdc335eb%22%2C%22exportedName%22%3A%22uploadMediaAction%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CmediaActions.ts%22%7D%5D%5D%5D&__client_imported__=true!",
           "async": false
-        },
-        "app/admin/media/page": {
-          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CmediaActions.ts%22%2C%5B%7B%22id%22%3A%2200d34fa5874576ba9256d9bbdec5c81d5a5420a37b%22%2C%22exportedName%22%3A%22listMediaAssets%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CmediaActions.ts%22%7D%2C%7B%22id%22%3A%22408eff78a708ee81bbfad4e90924c0897aa84a461e%22%2C%22exportedName%22%3A%22deleteMediaAction%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CmediaActions.ts%22%7D%2C%7B%22id%22%3A%2240c75b9ba2d65b944d4eb1d29f1e5ac660bdc335eb%22%2C%22exportedName%22%3A%22uploadMediaAction%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CmediaActions.ts%22%7D%5D%5D%5D&__client_imported__=!",
-          "async": false
         }
       },
       "layer": {
-        "app/admin/settings/page": "action-browser",
-        "app/admin/media/page": "rsc"
+        "app/admin/settings/page": "action-browser"
       },
       "filename": "../D:\\InternalTools\\web_base\\src\\app\\actions\\mediaActions.ts",
       "exportedName": "deleteMediaAction"
@@ -131,31 +139,13 @@
         "app/admin/settings/page": {
           "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cadmin%5C%5Csign-out-action.ts%22%2C%5B%7B%22id%22%3A%2200fa79f08c838c2d9eb5f98831b9b6f5ffe1b0fe13%22%2C%22exportedName%22%3A%22signOutAction%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cadmin%5C%5Csign-out-action.ts%22%7D%5D%5D%2C%5B%22D%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CchangePasswordAction.ts%22%2C%5B%7B%22id%22%3A%22607281aeb628b950d46733427f0843d18de8fdf83e%22%2C%22exportedName%22%3A%22changePasswordAction%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CchangePasswordAction.ts%22%7D%5D%5D%2C%5B%22D%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CmediaActions.ts%22%2C%5B%7B%22id%22%3A%2200d34fa5874576ba9256d9bbdec5c81d5a5420a37b%22%2C%22exportedName%22%3A%22listMediaAssets%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CmediaActions.ts%22%7D%2C%7B%22id%22%3A%22408eff78a708ee81bbfad4e90924c0897aa84a461e%22%2C%22exportedName%22%3A%22deleteMediaAction%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CmediaActions.ts%22%7D%2C%7B%22id%22%3A%2240c75b9ba2d65b944d4eb1d29f1e5ac660bdc335eb%22%2C%22exportedName%22%3A%22uploadMediaAction%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CmediaActions.ts%22%7D%5D%5D%5D&__client_imported__=true!",
           "async": false
-        },
-        "app/admin/media/page": {
-          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CmediaActions.ts%22%2C%5B%7B%22id%22%3A%2200d34fa5874576ba9256d9bbdec5c81d5a5420a37b%22%2C%22exportedName%22%3A%22listMediaAssets%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CmediaActions.ts%22%7D%2C%7B%22id%22%3A%22408eff78a708ee81bbfad4e90924c0897aa84a461e%22%2C%22exportedName%22%3A%22deleteMediaAction%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CmediaActions.ts%22%7D%2C%7B%22id%22%3A%2240c75b9ba2d65b944d4eb1d29f1e5ac660bdc335eb%22%2C%22exportedName%22%3A%22uploadMediaAction%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5CmediaActions.ts%22%7D%5D%5D%5D&__client_imported__=!",
-          "async": false
         }
       },
       "layer": {
-        "app/admin/settings/page": "action-browser",
-        "app/admin/media/page": "rsc"
+        "app/admin/settings/page": "action-browser"
       },
       "filename": "../D:\\InternalTools\\web_base\\src\\app\\actions\\mediaActions.ts",
       "exportedName": "uploadMediaAction"
-    },
-    "404175155be8d6980de36968bd9c822e7f1d742fb8": {
-      "workers": {
-        "app/admin/collections/page": {
-          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22D%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cadmin%5C%5Csign-out-action.ts%22%2C%5B%7B%22id%22%3A%2200fa79f08c838c2d9eb5f98831b9b6f5ffe1b0fe13%22%2C%22exportedName%22%3A%22signOutAction%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cadmin%5C%5Csign-out-action.ts%22%7D%5D%5D%2C%5B%22D%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cadmin%5C%5Ccollections%5C%5Cactions.ts%22%2C%5B%7B%22id%22%3A%22404175155be8d6980de36968bd9c822e7f1d742fb8%22%2C%22exportedName%22%3A%22updateCollectionConfig%22%2C%22filename%22%3A%22..%2FD%3A%5C%5CInternalTools%5C%5Cweb_base%5C%5Csrc%5C%5Capp%5C%5Cadmin%5C%5Ccollections%5C%5Cactions.ts%22%7D%5D%5D%5D&__client_imported__=true!",
-          "async": false
-        }
-      },
-      "layer": {
-        "app/admin/collections/page": "action-browser"
-      },
-      "filename": "../D:\\InternalTools\\web_base\\src\\app\\admin\\collections\\actions.ts",
-      "exportedName": "updateCollectionConfig"
     }
   },
   "edge": {},

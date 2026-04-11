@@ -11,15 +11,31 @@
       "static/chunks/main-app.js",
       "static/chunks/app/(storefront)/layout.js"
     ],
-    "/(storefront)/page": [
+    "/(storefront)/product/[id]/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(storefront)/page.js"
+      "static/css/app/(storefront)/product/[id]/page.css",
+      "static/chunks/app/(storefront)/product/[id]/page.js"
     ],
     "/api/auth/[...nextauth]/route": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/api/auth/[...nextauth]/route.js"
+    ],
+    "/(storefront)/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(storefront)/page.js"
+    ],
+    "/login/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/login/page.js"
+    ],
+    "/login/register/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/login/register/page.js"
     ],
     "/admin/layout": [
       "static/chunks/webpack.js",
@@ -30,16 +46,6 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/admin/settings/page.js"
-    ],
-    "/admin/collections/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/admin/collections/page.js"
-    ],
-    "/admin/media/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/admin/media/page.js"
     ]
   }
 }
