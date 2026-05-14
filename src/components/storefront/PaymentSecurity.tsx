@@ -1,5 +1,14 @@
 import type { ReactNode } from "react";
+import Image from "next/image";
 import { getSiteSetting } from "@/app/actions/settingActions";
+
+/** Logo chính thức (Commons); dùng bản 320px đủ nét khi hiển thị ~36px cao. */
+const PAYONEER_LOGO_SRC =
+  "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Payoneer_logo.svg/320px-Payoneer_logo.svg.png";
+
+/** Wordmark xanh; ký tự [] mã hóa trong URL. */
+const PINGPONG_LOGO_SRC =
+  "https://cdn.cookielaw.org/logos/7c7895c5-e5c1-4f3a-8409-eebf1aac9696/59cdcb65-ffae-4720-9f1b-524493f3f57f/00879ab7-bc97-4719-8bbe-fa6127afa9db/PingPong_Logo_%5BBlue%5D.png";
 
 function VisaMark() {
   return (
@@ -52,10 +61,17 @@ function AmexMark() {
 function PingpongMark() {
   return (
     <div
-      className="flex h-9 min-w-[3.25rem] items-center justify-center rounded border border-zinc-200 bg-[#E02020] px-1.5 text-[9px] font-bold leading-tight text-white"
+      className="flex h-9 max-w-[7.5rem] items-center justify-center rounded-md border border-zinc-200 bg-white px-2"
+      role="img"
       aria-label="PingPong"
     >
-      PingPong
+      <Image
+        src={PINGPONG_LOGO_SRC}
+        alt=""
+        width={120}
+        height={32}
+        className="h-7 w-auto max-h-7 object-contain object-center"
+      />
     </div>
   );
 }
@@ -63,10 +79,17 @@ function PingpongMark() {
 function PayoneerMark() {
   return (
     <div
-      className="flex h-9 min-w-[3.25rem] items-center justify-center rounded border border-zinc-200 bg-[#FF4800] px-1.5 text-[9px] font-bold leading-tight text-white"
+      className="flex h-9 max-w-[9rem] items-center justify-center rounded-md border border-zinc-200 bg-white px-2"
+      role="img"
       aria-label="Payoneer"
     >
-      Payoneer
+      <Image
+        src={PAYONEER_LOGO_SRC}
+        alt=""
+        width={128}
+        height={36}
+        className="h-7 w-auto max-h-7 object-contain object-left"
+      />
     </div>
   );
 }
