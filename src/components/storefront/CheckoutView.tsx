@@ -10,6 +10,12 @@ import {
   type CartProductRow,
 } from "@/app/actions/orderActions";
 import { useCart } from "@/hooks/useCart";
+import { PaymentMethodBadges } from "@/components/storefront/PaymentMethodBadges";
+import {
+  hasCardOrOnlineWalletFlags,
+  pickDefaultCheckoutPayment,
+  type PaymentDisplayFlags,
+} from "@/lib/payment-display";
 import { cartLineKey } from "@/lib/sizes";
 import { formatMoney, type CurrencyCode } from "@/lib/format-price";
 import { FLAT_SHIPPING_FEE } from "@/lib/shipping";
@@ -32,29 +38,19 @@ const US_STATES = [
 
 type PaymentId = "paypal" | "card" | "cod" | "bank";
 
-function CardBrandIcons() {
-  return (
-    <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-zinc-200 pt-3">
-      <span className="text-xs text-zinc-500">Accepted:</span>
-      <span className="inline-flex h-7 min-w-[2.75rem] items-center justify-center rounded border border-zinc-200 bg-white px-2 text-[10px] font-black tracking-tight text-[#1A1F71]">
-        VISA
-      </span>
-      <span className="inline-flex h-7 items-center rounded border border-zinc-200 bg-white px-2 text-[10px] font-bold text-[#003087]">
-        PayPal
-      </span>
-      <span className="relative inline-flex h-7 w-10 items-center justify-center rounded border border-zinc-200 bg-white">
-        <span className="absolute left-2 h-4 w-4 rounded-full bg-[#EB001B]/90" />
-        <span className="absolute right-2 h-4 w-4 rounded-full bg-[#F79E1B]/90" />
-      </span>
-      <span className="inline-flex h-7 min-w-[2rem] items-center justify-center rounded border border-zinc-200 bg-white text-[9px] font-bold text-zinc-700">
-        JCB
-      </span>
-      <span className="text-xs font-medium text-zinc-400">+3</span>
-    </div>
-  );
+function cardNetworksSubtitle(f: PaymentDisplayFlags): string {
+  const parts: string[] = [];
+  if (f.visa) parts.push("Visa");
+  if (f.mastercard) parts.push("Mastercard");
+  if (f.amex) parts.push("Amex");
+  if (f.pingpong) parts.push("PingPong");
+  if (f.payoneer) parts.push("Payoneer");
+  return parts.join(", ");
 }
 
-export function CheckoutView() {
+type CheckoutViewProps = { paymentDisplay: PaymentDisplayFlags };
+
+export function CheckoutView({ paymentDisplay }: CheckoutViewProps) {
   const router = useRouter();
   const { cartItems, cartCurrency, clearCart } = useCart();
   const [products, setProducts] = useState<CartProductRow[]>([]);
@@ -62,7 +58,7 @@ export function CheckoutView() {
   const [loadingProducts, setLoadingProducts] = useState(true);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [payment, setPayment] = useState<PaymentId>("paypal");
+  const [payment, setPayment] = useState<PaymentId>(() => pickDefaultCheckoutPayment(paymentDisplay));
   const [country, setCountry] = useState<string>("VN");
 
   useEffect(() => setMounted(true), []);
@@ -114,6 +110,50 @@ export function CheckoutView() {
   const cartIncomplete =
     cartItems.length > 0 && !loadingProducts && lines.length !== cartItems.length;
 
+  const showUsState = country === "US";
+
+  useEffect(() => {
+    const showPp = paymentDisplay.paypal;
+    const showCard = hasCardOrOnlineWalletFlags(paymentDisplay);
+    const valid =
+      (payment === "paypal" && showPp) ||
+      (payment === "card" && showCard) ||
+      payment === "cod" ||
+      payment === "bank";
+    if (!valid) setPayment(pickDefaultCheckoutPayment(paymentDisplay));
+  }, [paymentDisplay, payment]);
+
+  const paymentOptions = useMemo(() => {
+    type Opt = { id: PaymentId; label: string; desc: string };
+    const out: Opt[] = [];
+    if (paymentDisplay.paypal) {
+      out.push({ id: "paypal", label: "PayPal", desc: "Pay securely with PayPal" });
+    }
+    if (hasCardOrOnlineWalletFlags(paymentDisplay)) {
+      const names = cardNetworksSubtitle(paymentDisplay);
+      const classic = paymentDisplay.visa || paymentDisplay.mastercard || paymentDisplay.amex;
+      out.push({
+        id: "card",
+        label: classic ? "Credit / debit card" : "Online payment",
+        desc: names ? `${names} — processed securely` : "Processed securely",
+      });
+    }
+    out.push(
+      { id: "cod", label: "Cash on delivery (COD)", desc: "Pay in cash when your order arrives" },
+      { id: "bank", label: "Bank transfer", desc: "QR / account details (confirmed separately)" },
+    );
+    return out;
+  }, [paymentDisplay]);
+
+  const showBrandBadges =
+    (payment === "paypal" || payment === "card") &&
+    (paymentDisplay.paypal ||
+      paymentDisplay.visa ||
+      paymentDisplay.mastercard ||
+      paymentDisplay.amex ||
+      paymentDisplay.pingpong ||
+      paymentDisplay.payoneer);
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError(null);
@@ -154,8 +194,6 @@ export function CheckoutView() {
       </div>
     );
   }
-
-  const showUsState = country === "US";
 
   return (
     <div className="mx-auto max-w-6xl pb-16">
@@ -431,14 +469,7 @@ export function CheckoutView() {
               <div className="mt-8 border-t border-zinc-200 pt-6">
                 <p className="text-sm font-medium text-zinc-900">Payment method</p>
                 <div className="mt-3 space-y-2">
-                  {(
-                    [
-                      { id: "paypal" as const, label: "PayPal", desc: "Pay securely with PayPal" },
-                      { id: "card" as const, label: "Credit / debit card", desc: "Visa, Mastercard, JCB, …" },
-                      { id: "cod" as const, label: "Cash on delivery (COD)", desc: "Pay in cash when your order arrives" },
-                      { id: "bank" as const, label: "Bank transfer", desc: "QR / account details (confirmed separately)" },
-                    ] as const
-                  ).map((opt) => (
+                  {paymentOptions.map((opt) => (
                     <label
                       key={opt.id}
                       className={`flex cursor-pointer items-start gap-3 rounded-lg border p-3 transition ${
@@ -463,7 +494,9 @@ export function CheckoutView() {
                   ))}
                 </div>
 
-                {(payment === "paypal" || payment === "card") ? <CardBrandIcons /> : null}
+                {showBrandBadges ? (
+                  <PaymentMethodBadges flags={paymentDisplay} variant="checkout" />
+                ) : null}
 
                 <p className="mt-4 text-xs leading-relaxed text-zinc-500">
                   Your personal data will be used to process your order, support your experience on this website, and for

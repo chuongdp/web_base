@@ -343,6 +343,7 @@ export async function updateSiteSetting(formData: FormData): Promise<UpdateSiteS
   revalidatePath("/about-us");
   revalidatePath("/contact");
   revalidatePath("/product/[id]", "page");
+  revalidatePath("/checkout");
 
   return { ok: true };
 }
