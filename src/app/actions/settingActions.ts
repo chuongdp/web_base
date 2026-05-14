@@ -140,6 +140,13 @@ export async function updateSiteSetting(formData: FormData): Promise<UpdateSiteS
   const footerMetaEmail = optStr(formData, "footerMetaEmail");
   const footerMetaHours = optStr(formData, "footerMetaHours");
 
+  const paymentShowVisa = formData.get("paymentShowVisa") === "on";
+  const paymentShowMastercard = formData.get("paymentShowMastercard") === "on";
+  const paymentShowPaypal = formData.get("paymentShowPaypal") === "on";
+  const paymentShowAmex = formData.get("paymentShowAmex") === "on";
+  const paymentShowPingpong = formData.get("paymentShowPingpong") === "on";
+  const paymentShowPayoneer = formData.get("paymentShowPayoneer") === "on";
+
   if (!siteName) {
     return { ok: false, message: "Site name is required." };
   }
@@ -261,6 +268,12 @@ export async function updateSiteSetting(formData: FormData): Promise<UpdateSiteS
       footerMetaAddress,
       footerMetaEmail,
       footerMetaHours,
+      paymentShowVisa,
+      paymentShowMastercard,
+      paymentShowPaypal,
+      paymentShowAmex,
+      paymentShowPingpong,
+      paymentShowPayoneer,
     },
     update: {
       siteName,
@@ -315,6 +328,12 @@ export async function updateSiteSetting(formData: FormData): Promise<UpdateSiteS
       footerMetaAddress,
       footerMetaEmail,
       footerMetaHours,
+      paymentShowVisa,
+      paymentShowMastercard,
+      paymentShowPaypal,
+      paymentShowAmex,
+      paymentShowPingpong,
+      paymentShowPayoneer,
     },
   });
 
@@ -323,6 +342,7 @@ export async function updateSiteSetting(formData: FormData): Promise<UpdateSiteS
   revalidatePath("/admin/settings");
   revalidatePath("/about-us");
   revalidatePath("/contact");
+  revalidatePath("/product/[id]", "page");
 
   return { ok: true };
 }

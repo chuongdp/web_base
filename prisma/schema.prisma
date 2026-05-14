@@ -252,6 +252,14 @@ model SiteSetting {
   /** URL iframe Google Maps (Chia sẻ → Nhúng bản đồ → copy src). */
   contactMapEmbedUrl String? @map("contact_map_embed_url")
 
+  /// Badge «Payment & Security» trên trang sản phẩm — bật/tắt từ CMS
+  paymentShowVisa        Boolean @default(true) @map("payment_show_visa")
+  paymentShowMastercard  Boolean @default(true) @map("payment_show_mastercard")
+  paymentShowPaypal      Boolean @default(true) @map("payment_show_paypal")
+  paymentShowAmex        Boolean @default(true) @map("payment_show_amex")
+  paymentShowPingpong    Boolean @default(false) @map("payment_show_pingpong")
+  paymentShowPayoneer    Boolean @default(false) @map("payment_show_payoneer")
+
   /// Dòng meta footer (preset cards): tên hiển thị chủ shop — để trống dùng tên site
   footerMetaShopOwner String? @map("footer_meta_shop_owner")
   footerMetaAddress   String? @map("footer_meta_address")

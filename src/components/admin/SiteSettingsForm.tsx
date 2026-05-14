@@ -61,6 +61,12 @@ export type SiteSettingsInitial = {
   footerMetaAddress: string;
   footerMetaEmail: string;
   footerMetaHours: string;
+  paymentShowVisa: boolean;
+  paymentShowMastercard: boolean;
+  paymentShowPaypal: boolean;
+  paymentShowAmex: boolean;
+  paymentShowPingpong: boolean;
+  paymentShowPayoneer: boolean;
 };
 
 type Props = {
@@ -77,6 +83,11 @@ const SECTIONS = [
     id: "footer" as const,
     label: "Footer — dòng thông tin",
     description: "Khối Shop owner / Address / Email / Hours (preset giao diện dạng cards)",
+  },
+  {
+    id: "payment" as const,
+    label: "Thanh toán (badge)",
+    description: "Logo phương thức thanh toán trong khối Payment & Security (trang chi tiết sản phẩm)",
   },
   { id: "general" as const, label: "Chung & thương hiệu", description: "Tên site, logo, favicon, màu, tiền tệ" },
   {
@@ -122,7 +133,7 @@ export function SiteSettingsForm({ initial }: Props) {
     setMessage({ kind: "err", text: result.message });
   }
 
-  const formKey = `${initial.storefrontTheme}-${initial.primaryColor}-${initial.siteName}-${initial.defaultCurrency}-${initial.logoUrl}-${initial.faviconUrl}-${initial.footerMetaShopOwner}-${initial.footerMetaAddress}-${initial.footerMetaEmail}-${initial.footerMetaHours}-${initial.galleryImageUrls}`;
+  const formKey = `${initial.storefrontTheme}-${initial.primaryColor}-${initial.siteName}-${initial.defaultCurrency}-${initial.logoUrl}-${initial.faviconUrl}-${initial.footerMetaShopOwner}-${initial.footerMetaAddress}-${initial.footerMetaEmail}-${initial.footerMetaHours}-${initial.galleryImageUrls}-${initial.paymentShowVisa}-${initial.paymentShowMastercard}-${initial.paymentShowPaypal}-${initial.paymentShowAmex}-${initial.paymentShowPingpong}-${initial.paymentShowPayoneer}`;
 
   const currentMeta = SECTIONS.find((s) => s.id === active);
 
@@ -254,6 +265,37 @@ export function SiteSettingsForm({ initial }: Props) {
               />
             </div>
           </div>
+        </div>
+
+        {/* —— Payment badges (trang sản phẩm) —— */}
+        <div className={`space-y-6 ${sectionHidden(active, "payment")}`}>
+          <p className="text-sm text-zinc-600">
+            Bật/tắt từng logo trong khối «Payment &amp; Security» trên trang chi tiết sản phẩm. Tắt hết thì ẩn hàng logo; đoạn
+            văn bảo mật thanh toán vẫn hiển thị.
+          </p>
+          <fieldset className="space-y-3 rounded-xl border border-zinc-200 bg-zinc-50/80 p-4">
+            <legend className="px-1 text-sm font-medium text-zinc-800">Hiển thị</legend>
+            {(
+              [
+                ["paymentShowPaypal", "PayPal", initial.paymentShowPaypal],
+                ["paymentShowVisa", "Visa", initial.paymentShowVisa],
+                ["paymentShowMastercard", "Mastercard", initial.paymentShowMastercard],
+                ["paymentShowAmex", "American Express (Amex)", initial.paymentShowAmex],
+                ["paymentShowPingpong", "PingPong", initial.paymentShowPingpong],
+                ["paymentShowPayoneer", "Payoneer", initial.paymentShowPayoneer],
+              ] as const
+            ).map(([name, label, checked]) => (
+              <label key={name} className="flex cursor-pointer items-center gap-2 text-sm text-zinc-800">
+                <input
+                  type="checkbox"
+                  name={name}
+                  defaultChecked={checked}
+                  className="h-4 w-4 rounded border-zinc-300 text-zinc-900"
+                />
+                {label}
+              </label>
+            ))}
+          </fieldset>
         </div>
 
         {/* —— Chung —— */}

@@ -32,6 +32,12 @@ const emptyAboutContact = {
   footerMetaAddress: "",
   footerMetaEmail: "",
   footerMetaHours: "",
+  paymentShowVisa: true,
+  paymentShowMastercard: true,
+  paymentShowPaypal: true,
+  paymentShowAmex: true,
+  paymentShowPingpong: false,
+  paymentShowPayoneer: false,
 };
 
 const defaults = {
@@ -120,6 +126,12 @@ export default async function AdminSettingsPage() {
         footerMetaAddress: row.footerMetaAddress ?? "",
         footerMetaEmail: row.footerMetaEmail ?? "",
         footerMetaHours: row.footerMetaHours ?? "",
+        paymentShowVisa: row.paymentShowVisa,
+        paymentShowMastercard: row.paymentShowMastercard,
+        paymentShowPaypal: row.paymentShowPaypal,
+        paymentShowAmex: row.paymentShowAmex,
+        paymentShowPingpong: row.paymentShowPingpong,
+        paymentShowPayoneer: row.paymentShowPayoneer,
       }
     : defaults;
 
