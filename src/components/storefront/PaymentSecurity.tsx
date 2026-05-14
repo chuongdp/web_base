@@ -2,9 +2,8 @@ import type { ReactNode } from "react";
 import Image from "next/image";
 import { getSiteSetting } from "@/app/actions/settingActions";
 
-/** Logo chính thức (Commons); dùng bản 320px đủ nét khi hiển thị ~36px cao. */
 const PAYONEER_LOGO_SRC =
-  "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Payoneer_logo.svg/320px-Payoneer_logo.svg.png";
+  "https://banner2.cleanpng.com/lnd/20241224/qj/ab93c2e169064bdfffe5fe527b6767.webp";
 
 /** Wordmark xanh; ký tự [] mã hóa trong URL. */
 const PINGPONG_LOGO_SRC =
@@ -83,12 +82,12 @@ function PayoneerMark() {
       role="img"
       aria-label="Payoneer"
     >
-      <Image
+      <img
         src={PAYONEER_LOGO_SRC}
         alt=""
-        width={128}
-        height={36}
-        className="h-7 w-auto max-h-7 object-contain object-left"
+        className="h-7 w-auto max-h-7 max-w-full object-contain object-left"
+        loading="lazy"
+        decoding="async"
       />
     </div>
   );
