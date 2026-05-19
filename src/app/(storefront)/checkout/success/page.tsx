@@ -37,6 +37,8 @@ function paymentMethodLabel(m: string): string {
       return "PayPal";
     case "card":
       return "Credit / debit card";
+    case "payoneer":
+      return "Payoneer";
     case "cod":
       return "Cash on delivery (COD)";
     case "bank":
@@ -75,13 +77,15 @@ function OrderCard({ order, paymentFlags }: { order: OrderSuccessDTO; paymentFla
   const cc = order.currency as CurrencyCode;
   const placed = formatPlacedAt(order.createdAt);
   const badge = orderStatusBadge(order.status);
-  const showWalletBadges = order.paymentMethod === "paypal" || order.paymentMethod === "card";
+  const showWalletBadges = order.paymentMethod === "paypal" || order.paymentMethod === "card" || order.paymentMethod === "payoneer";
 
   let paymentNote: string;
   if (order.paymentMethod === "cod") {
     paymentNote = "Pay in cash when your order arrives.";
   } else if (order.paymentMethod === "bank") {
     paymentNote = `Order placed on ${placed}. Bank transfer details will be confirmed separately.`;
+  } else if (order.paymentMethod === "payoneer") {
+    paymentNote = `Order placed on ${placed}. Complete your Payoneer payment using the link or instructions we send.`;
   } else {
     paymentNote = `Paid on ${placed}`;
   }

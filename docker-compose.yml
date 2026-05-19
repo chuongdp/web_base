@@ -14,6 +14,7 @@ services:
       DATABASE_URL: file:/data/app.db
       AUTH_SECRET: ${AUTH_SECRET}
       AUTH_URL: ${AUTH_URL:-http://localhost:3000}
+      PAYONEER_CHECKOUT_URL_TEMPLATE: ${PAYONEER_CHECKOUT_URL_TEMPLATE:-}
     volumes:
       - sqlite_data:/data
       # Ảnh upload (Media) — giữ khi rebuild container

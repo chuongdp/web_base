@@ -21,13 +21,21 @@ export function paymentDisplayFromSiteSetting(s: SiteSetting | null): PaymentDis
   };
 }
 
-/** Có hiển thị radio «Credit / debit card…» (gồm mạng thẻ + PingPong / Payoneer nếu bật). */
-export function hasCardOrOnlineWalletFlags(f: PaymentDisplayFlags): boolean {
-  return f.visa || f.mastercard || f.amex || f.pingpong || f.payoneer;
+/** Có ít nhất một logo phương thức bật (để hiện hàng badge). */
+export function hasAnyPaymentBadgeFlag(f: PaymentDisplayFlags): boolean {
+  return f.paypal || f.visa || f.mastercard || f.amex || f.pingpong || f.payoneer;
 }
 
-export function pickDefaultCheckoutPayment(f: PaymentDisplayFlags): "paypal" | "card" | "cod" | "bank" {
+/** Radio «Credit / debit card / online» — thẻ + PingPong (Payoneer là lựa chọn riêng). */
+export function hasCardOrOnlineWalletFlags(f: PaymentDisplayFlags): boolean {
+  return f.visa || f.mastercard || f.amex || f.pingpong;
+}
+
+export type CheckoutPaymentId = "paypal" | "card" | "cod" | "bank" | "payoneer";
+
+export function pickDefaultCheckoutPayment(f: PaymentDisplayFlags): CheckoutPaymentId {
   if (f.paypal) return "paypal";
+  if (f.payoneer) return "payoneer";
   if (hasCardOrOnlineWalletFlags(f)) return "card";
   return "cod";
 }

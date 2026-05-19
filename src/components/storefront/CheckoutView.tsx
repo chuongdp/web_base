@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   createOrder,
   getCartProducts,
@@ -12,8 +12,10 @@ import {
 import { useCart } from "@/hooks/useCart";
 import { PaymentMethodBadges } from "@/components/storefront/PaymentMethodBadges";
 import {
+  hasAnyPaymentBadgeFlag,
   hasCardOrOnlineWalletFlags,
   pickDefaultCheckoutPayment,
+  type CheckoutPaymentId,
   type PaymentDisplayFlags,
 } from "@/lib/payment-display";
 import { cartLineKey } from "@/lib/sizes";
@@ -36,15 +38,12 @@ const US_STATES = [
   { value: "WA", label: "Washington" },
 ] as const;
 
-type PaymentId = "paypal" | "card" | "cod" | "bank";
-
 function cardNetworksSubtitle(f: PaymentDisplayFlags): string {
   const parts: string[] = [];
   if (f.visa) parts.push("Visa");
   if (f.mastercard) parts.push("Mastercard");
   if (f.amex) parts.push("Amex");
   if (f.pingpong) parts.push("PingPong");
-  if (f.payoneer) parts.push("Payoneer");
   return parts.join(", ");
 }
 
@@ -53,12 +52,14 @@ type CheckoutViewProps = { paymentDisplay: PaymentDisplayFlags };
 export function CheckoutView({ paymentDisplay }: CheckoutViewProps) {
   const router = useRouter();
   const { cartItems, cartCurrency, clearCart } = useCart();
+  /** Tránh redirect /cart khi vừa clear giỏ sau đặt hàng thành công (race với /checkout/success hoặc Payoneer). */
+  const skipEmptyCartRedirectRef = useRef(false);
   const [products, setProducts] = useState<CartProductRow[]>([]);
   const [mounted, setMounted] = useState(false);
   const [loadingProducts, setLoadingProducts] = useState(true);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [payment, setPayment] = useState<PaymentId>(() => pickDefaultCheckoutPayment(paymentDisplay));
+  const [payment, setPayment] = useState<CheckoutPaymentId>(() => pickDefaultCheckoutPayment(paymentDisplay));
   const [country, setCountry] = useState<string>("VN");
 
   useEffect(() => setMounted(true), []);
@@ -79,8 +80,12 @@ export function CheckoutView({ paymentDisplay }: CheckoutViewProps) {
   }, [ids]);
 
   useEffect(() => {
+    if (cartItems.length > 0) skipEmptyCartRedirectRef.current = false;
+  }, [cartItems.length]);
+
+  useEffect(() => {
     if (!mounted) return;
-    if (cartItems.length === 0) {
+    if (cartItems.length === 0 && !skipEmptyCartRedirectRef.current) {
       router.replace("/cart");
     }
   }, [mounted, cartItems.length, router]);
@@ -115,19 +120,28 @@ export function CheckoutView({ paymentDisplay }: CheckoutViewProps) {
   useEffect(() => {
     const showPp = paymentDisplay.paypal;
     const showCard = hasCardOrOnlineWalletFlags(paymentDisplay);
+    const showPayoneer = paymentDisplay.payoneer;
     const valid =
       (payment === "paypal" && showPp) ||
       (payment === "card" && showCard) ||
+      (payment === "payoneer" && showPayoneer) ||
       payment === "cod" ||
       payment === "bank";
     if (!valid) setPayment(pickDefaultCheckoutPayment(paymentDisplay));
   }, [paymentDisplay, payment]);
 
   const paymentOptions = useMemo(() => {
-    type Opt = { id: PaymentId; label: string; desc: string };
+    type Opt = { id: CheckoutPaymentId; label: string; desc: string };
     const out: Opt[] = [];
     if (paymentDisplay.paypal) {
       out.push({ id: "paypal", label: "PayPal", desc: "Pay securely with PayPal" });
+    }
+    if (paymentDisplay.payoneer) {
+      out.push({
+        id: "payoneer",
+        label: "Payoneer",
+        desc: "Complete payment via Payoneer (on-site or redirect, depending on your store setup).",
+      });
     }
     if (hasCardOrOnlineWalletFlags(paymentDisplay)) {
       const names = cardNetworksSubtitle(paymentDisplay);
@@ -146,13 +160,7 @@ export function CheckoutView({ paymentDisplay }: CheckoutViewProps) {
   }, [paymentDisplay]);
 
   const showBrandBadges =
-    (payment === "paypal" || payment === "card") &&
-    (paymentDisplay.paypal ||
-      paymentDisplay.visa ||
-      paymentDisplay.mastercard ||
-      paymentDisplay.amex ||
-      paymentDisplay.pingpong ||
-      paymentDisplay.payoneer);
+    (payment === "paypal" || payment === "card" || payment === "payoneer") && hasAnyPaymentBadgeFlag(paymentDisplay);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -177,7 +185,12 @@ export function CheckoutView({ paymentDisplay }: CheckoutViewProps) {
       setError(res.message);
       return;
     }
+    skipEmptyCartRedirectRef.current = true;
     clearCart();
+    if (res.payoneerRedirectUrl) {
+      window.location.assign(res.payoneerRedirectUrl);
+      return;
+    }
     router.push(`/checkout/success?n=${encodeURIComponent(res.orderNumber)}`);
   }
 
@@ -190,7 +203,9 @@ export function CheckoutView({ paymentDisplay }: CheckoutViewProps) {
   if (cartItems.length === 0) {
     return (
       <div className="mx-auto max-w-xl py-16 text-center text-sm text-zinc-600">
-        Redirecting to cart…
+        {skipEmptyCartRedirectRef.current
+          ? "Redirecting to confirmation…"
+          : "Redirecting to cart…"}
       </div>
     );
   }
@@ -517,11 +532,23 @@ export function CheckoutView({ paymentDisplay }: CheckoutViewProps) {
                   className={
                     payment === "paypal"
                       ? "flex w-full min-h-[48px] items-center justify-center gap-2 rounded-lg border border-amber-500/30 bg-[#FFC439] px-4 py-3 text-sm font-bold text-[#003087] shadow-sm hover:bg-[#f5bd38] disabled:opacity-60"
-                      : "flex w-full min-h-[48px] items-center justify-center gap-2 rounded-lg px-4 py-3 text-sm font-semibold text-white disabled:opacity-60"
+                      : payment === "payoneer"
+                        ? "flex w-full min-h-[48px] items-center justify-center gap-2 rounded-lg border border-orange-400/40 bg-[#FF5500] px-4 py-3 text-sm font-bold text-white shadow-sm hover:bg-[#e54c00] disabled:opacity-60"
+                        : "flex w-full min-h-[48px] items-center justify-center gap-2 rounded-lg px-4 py-3 text-sm font-semibold text-white disabled:opacity-60"
                   }
-                  style={payment === "paypal" ? undefined : { backgroundColor: "var(--sf-primary)" }}
+                  style={
+                    payment === "paypal" || payment === "payoneer" ? undefined : { backgroundColor: "var(--sf-primary)" }
+                  }
                 >
-                  {pending ? "Processing…" : payment === "paypal" ? "Pay with PayPal" : "Place order"}
+                  {pending
+                    ? payment === "payoneer"
+                      ? "Redirecting…"
+                      : "Processing…"
+                    : payment === "paypal"
+                      ? "Pay with PayPal"
+                      : payment === "payoneer"
+                        ? "Pay with Payoneer"
+                        : "Place order"}
                 </button>
                 <Link
                   href="/cart"

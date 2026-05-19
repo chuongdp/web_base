@@ -6,7 +6,21 @@ import { prisma } from "@/lib/prisma";
 import { cartLineKey, normalizeSizeLabel } from "@/lib/sizes";
 import { FLAT_SHIPPING_FEE } from "@/lib/shipping";
 
-const PAYMENT_METHODS = new Set(["paypal", "cod", "card", "bank"]);
+const PAYMENT_METHODS = new Set(["paypal", "cod", "card", "bank", "payoneer"]);
+
+function buildPayoneerRedirectUrl(
+  orderNumber: string,
+  total: Prisma.Decimal,
+  currency: Currency,
+): string | undefined {
+  const template = process.env.PAYONEER_CHECKOUT_URL_TEMPLATE?.trim();
+  if (!template) return undefined;
+  const amountStr = total.toString();
+  return template
+    .replaceAll("{orderNumber}", encodeURIComponent(orderNumber))
+    .replaceAll("{amount}", encodeURIComponent(amountStr))
+    .replaceAll("{currency}", encodeURIComponent(currency));
+}
 
 export type CartLineInput = {
   productId: string;
@@ -55,7 +69,7 @@ function generateOrderNumber(): string {
 }
 
 export type CreateOrderResult =
-  | { ok: true; orderId: string; orderNumber: string }
+  | { ok: true; orderId: string; orderNumber: string; payoneerRedirectUrl?: string }
   | { ok: false; message: string };
 
 export type OrderSuccessDTO = {
@@ -311,7 +325,17 @@ export async function createOrder(formData: FormData): Promise<CreateOrderResult
         });
       });
 
-      return { ok: true, orderId: order.id, orderNumber: order.orderNumber };
+      const payoneerRedirectUrl =
+        paymentMethod === "payoneer"
+          ? buildPayoneerRedirectUrl(order.orderNumber, total, currency)
+          : undefined;
+
+      return {
+        ok: true,
+        orderId: order.id,
+        orderNumber: order.orderNumber,
+        ...(payoneerRedirectUrl ? { payoneerRedirectUrl } : {}),
+      };
     } catch (e) {
       if (e instanceof Error && e.message === "INSUFFICIENT_STOCK") {
         return { ok: false, message: "Not enough stock for one or more items. Refresh your cart and try again." };
