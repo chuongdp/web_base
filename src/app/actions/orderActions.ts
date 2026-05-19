@@ -58,6 +58,74 @@ export type CreateOrderResult =
   | { ok: true; orderId: string; orderNumber: string }
   | { ok: false; message: string };
 
+export type OrderSuccessDTO = {
+  orderNumber: string;
+  status: string;
+  createdAt: Date;
+  currency: Currency;
+  customerName: string;
+  email: string;
+  address: string | null;
+  paymentMethod: string;
+  subtotal: string;
+  shippingFee: string;
+  total: string;
+  items: {
+    id: string;
+    productId: string;
+    productName: string;
+    sizeLabel: string;
+    quantity: number;
+    unitPrice: string;
+    lineTotal: string;
+    imageUrl: string | null;
+  }[];
+};
+
+/** Chi tiết đơn cho trang thank-you (public, tra theo mã đơn). */
+export async function getOrderPublicByNumber(orderNumber: string): Promise<OrderSuccessDTO | null> {
+  const trimmed = orderNumber.trim();
+  if (!trimmed) return null;
+  const o = await prisma.order.findUnique({
+    where: { orderNumber: trimmed },
+    include: { items: { orderBy: { id: "asc" } } },
+  });
+  if (!o) return null;
+  const productIds = [...new Set(o.items.map((i) => i.productId))];
+  const products = await prisma.product.findMany({
+    where: { id: { in: productIds } },
+    select: {
+      id: true,
+      images: { orderBy: { sortOrder: "asc" }, take: 1, select: { url: true } },
+    },
+  });
+  const imgByProductId = new Map(products.map((p) => [p.id, p.images[0]?.url ?? null]));
+
+  return {
+    orderNumber: o.orderNumber,
+    status: o.status,
+    createdAt: o.createdAt,
+    currency: o.currency,
+    customerName: o.customerName,
+    email: o.email,
+    address: o.address,
+    paymentMethod: o.paymentMethod,
+    subtotal: o.subtotal.toString(),
+    shippingFee: o.shippingFee.toString(),
+    total: o.total.toString(),
+    items: o.items.map((it) => ({
+      id: it.id,
+      productId: it.productId,
+      productName: it.productName,
+      sizeLabel: it.sizeLabel,
+      quantity: it.quantity,
+      unitPrice: it.unitPrice.toString(),
+      lineTotal: it.lineTotal.toString(),
+      imageUrl: imgByProductId.get(it.productId) ?? null,
+    })),
+  };
+}
+
 function parseCartLines(raw: string): CartLineInput[] {
   const parsed = JSON.parse(raw) as unknown;
   if (!Array.isArray(parsed) || parsed.length === 0) {
