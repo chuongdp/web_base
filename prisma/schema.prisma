@@ -90,6 +90,9 @@ enum StorefrontTheme {
   luxury
   industrial
   playful
+  runway
+  streetwear
+  atelier
 }
 
 model Product {
