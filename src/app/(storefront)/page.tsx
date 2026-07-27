@@ -1,9 +1,15 @@
 import { getSiteSetting } from "@/app/actions/settingActions";
 import { BestSellersSection } from "@/components/storefront/BestSellersSection";
+import { HomeAmbientShell } from "@/components/storefront/HomeAmbientShell";
 import { HomeCollectionsSection } from "@/components/storefront/HomeCollectionsSection";
+import { HomeFeaturedSection } from "@/components/storefront/HomeFeaturedSection";
 import { HomeHero } from "@/components/storefront/HomeHero";
-import { ProductCard } from "@/components/storefront/ProductCard";
-import { DEFAULT_STOREFRONT_THEME, getFeaturedProductGridClass } from "@/lib/storefront-theme";
+import { HomeHeroScrollCue } from "@/components/storefront/HomeHeroScrollCue";
+import { HomeReveal } from "@/components/storefront/HomeReveal";
+import { HomeShopCtaBand } from "@/components/storefront/HomeShopCtaBand";
+import { HomeTrustStrip } from "@/components/storefront/HomeTrustStrip";
+import { homePageFlagsFromSetting } from "@/lib/home-page-flags";
+import { DEFAULT_STOREFRONT_THEME } from "@/lib/storefront-theme";
 import { prisma } from "@/lib/prisma";
 
 export const revalidate = 60;
@@ -19,56 +25,69 @@ export default async function StorefrontHomePage() {
   ]);
 
   const theme = setting?.storefrontTheme ?? DEFAULT_STOREFRONT_THEME;
+  const home = homePageFlagsFromSetting(setting);
 
-  return (
-    <div className="flex flex-col gap-16 lg:gap-24">
-      <HomeHero
-        theme={theme}
-        heroTitle={setting?.heroTitle ?? null}
-        heroSubtitle={setting?.heroSubtitle ?? null}
-        heroButtonText={setting?.heroButtonText ?? null}
-        heroButtonLink={setting?.heroButtonLink ?? null}
-        heroImageUrl={setting?.heroImageUrl ?? null}
-        heroOverlayImageUrl={setting?.heroOverlayImageUrl ?? null}
-        heroImageWidthPx={setting?.heroImageWidthPx ?? null}
-        heroImageHeightPx={setting?.heroImageHeightPx ?? null}
-      />
+  const body = (
+    <div className="sf-home-flow">
+      <HomeReveal>
+        <HomeHero
+          theme={theme}
+          heroTitle={setting?.heroTitle ?? null}
+          heroSubtitle={setting?.heroSubtitle ?? null}
+          heroButtonText={setting?.heroButtonText ?? null}
+          heroButtonLink={setting?.heroButtonLink ?? null}
+          heroImageUrl={setting?.heroImageUrl ?? null}
+          heroOverlayImageUrl={setting?.heroOverlayImageUrl ?? null}
+          heroImageWidthPx={setting?.heroImageWidthPx ?? null}
+          heroImageHeightPx={setting?.heroImageHeightPx ?? null}
+        />
+        {home.showScrollCue ? <HomeHeroScrollCue /> : null}
+      </HomeReveal>
 
-      <HomeCollectionsSection />
+      {home.showTrustStrip ? (
+        <HomeReveal delay={80}>
+          <HomeTrustStrip />
+        </HomeReveal>
+      ) : null}
 
-      <BestSellersSection />
+      {home.showCollections ? (
+        <HomeReveal delay={120}>
+          <HomeCollectionsSection />
+        </HomeReveal>
+      ) : null}
 
-      <section id="products" className="scroll-mt-24">
-        <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <h2 className="sf-section-heading text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl">
-              Featured products
-            </h2>
-            <p className="mt-1 text-sm text-zinc-600">The latest picks from the store.</p>
-          </div>
-        </div>
+      {home.showShopCta ? (
+        <HomeReveal delay={140}>
+          <HomeShopCtaBand />
+        </HomeReveal>
+      ) : null}
 
-        {products.length === 0 ? (
-          <p className="rounded-2xl border border-dashed border-zinc-200 bg-zinc-50/80 px-6 py-14 text-center text-zinc-600">
-            No products yet. Add products in Admin to show them here.
-          </p>
-        ) : (
-          <ul className={getFeaturedProductGridClass(theme)}>
-            {products.map((p) => (
-              <li key={p.id}>
-                <ProductCard
-                  name={p.name}
-                  price={p.price}
-                  currency={p.currency}
-                  imageUrl={p.images[0]?.url ?? null}
-                  href={`/product/${p.id}`}
-                  className="rounded-none border-0 shadow-none ring-1 ring-zinc-200/90"
-                />
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
+      {home.showBestSellers ? (
+        <HomeReveal delay={160}>
+          <BestSellersSection />
+        </HomeReveal>
+      ) : null}
+
+      {home.showFeatured ? (
+        <HomeReveal delay={200}>
+          <HomeFeaturedSection
+            theme={theme}
+            products={products.map((p) => ({
+              id: p.id,
+              name: p.name,
+              price: p.price,
+              currency: p.currency,
+              imageUrl: p.images[0]?.url ?? null,
+            }))}
+          />
+        </HomeReveal>
+      ) : null}
     </div>
   );
+
+  if (!home.showAmbient) {
+    return body;
+  }
+
+  return <HomeAmbientShell>{body}</HomeAmbientShell>;
 }

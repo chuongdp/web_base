@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { HomeSectionHeader } from "@/components/storefront/HomeSectionHeader";
 import { getCollectionConfig } from "@/lib/collection-config";
 import {
   collectionPath,
@@ -48,49 +49,33 @@ export async function HomeCollectionsSection() {
   ]);
 
   const {
-    heading: headingClass,
+    titleAccent,
     grid: gridClass,
     tileRounded,
-    browseHeaderMode,
+    headerAlign,
   } = getCategorySectionClasses(site.storefrontTheme);
 
   const showViewAll = productCollections.length > 0;
 
-  const headerBlock =
-    browseHeaderMode === "row" ? (
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-        <h2 id="home-browse-heading" className={headingClass}>
-          {config.homeSectionHeading}
-        </h2>
-        {showViewAll ? (
-          <Link
-            href="/collections"
-            className="shrink-0 text-sm font-medium text-zinc-600 underline-offset-4 hover:text-zinc-900 hover:underline"
-          >
-            Xem tất cả
-          </Link>
-        ) : null}
-      </div>
-    ) : (
-      <div className="flex flex-col items-center text-center">
-        <h2 id="home-browse-heading" className={headingClass}>
-          {config.homeSectionHeading}
-        </h2>
-        {showViewAll ? (
-          <Link
-            href="/collections"
-            className="mt-3 text-sm font-medium text-zinc-600 underline-offset-4 hover:text-zinc-900 hover:underline"
-          >
-            Xem tất cả
-          </Link>
-        ) : null}
-      </div>
-    );
+  const sectionHeader = (
+    <HomeSectionHeader
+      id="home-browse-heading"
+      eyebrow="Browse"
+      title={config.homeSectionHeading}
+      description="Jump into collections and categories curated for this store."
+      align={headerAlign}
+      titleClassName={titleAccent}
+      action={showViewAll ? { href: "/collections", label: "Xem tất cả" } : null}
+    />
+  );
+
+  const tileLinkClass = `sf-home-collection-tile sf-tile-shine group relative block overflow-hidden ${tileRounded} shadow-md ring-1 ring-black/10 transition-shadow hover:shadow-xl`;
 
   if (productCollections.length > 0) {
     return (
       <section className="scroll-mt-24" aria-labelledby="home-browse-heading">
-        {headerBlock}
+        <div className="sf-home-section-rule mb-10 sm:mb-12" aria-hidden />
+        {sectionHeader}
         <ul className={gridClass}>
           {productCollections.map((col, i) => {
             const raw = col.products[0]?.images[0]?.url;
@@ -101,7 +86,7 @@ export async function HomeCollectionsSection() {
               <li key={col.id}>
                 <Link
                   href={productCollectionPath(col.slug)}
-                  className={`group relative block aspect-[4/3] overflow-hidden ${tileRounded} shadow-md ring-1 ring-black/10 transition-shadow hover:shadow-lg`}
+                  className={`${tileLinkClass} aspect-[4/3]`}
                 >
                   {coverUrl ? (
                     <Image
@@ -142,7 +127,8 @@ export async function HomeCollectionsSection() {
 
   return (
     <section className="scroll-mt-24" aria-labelledby="home-browse-heading">
-      {headerBlock}
+      <div className="sf-home-section-rule mb-10 sm:mb-12" aria-hidden />
+      {sectionHeader}
       <ul className={gridClass}>
         {categories.map((c, i) => {
           const preset = resolveEffectiveDisplayPreset(c.displayPreset, config.defaultDisplayPreset);
@@ -152,7 +138,7 @@ export async function HomeCollectionsSection() {
             <li key={c.id}>
               <Link
                 href={collectionPath(c.slug)}
-                className={`group relative block ${aspectClass} overflow-hidden ${tileRounded} shadow-md ring-1 ring-black/10 transition-shadow hover:shadow-lg`}
+                className={`${tileLinkClass} ${aspectClass}`}
               >
                 {imgUrl ? (
                   <>

@@ -147,6 +147,14 @@ export async function updateSiteSetting(formData: FormData): Promise<UpdateSiteS
   const paymentShowPingpong = formData.get("paymentShowPingpong") === "on";
   const paymentShowPayoneer = formData.get("paymentShowPayoneer") === "on";
 
+  const homeShowTrustStrip = formData.get("homeShowTrustStrip") === "on";
+  const homeShowAmbient = formData.get("homeShowAmbient") === "on";
+  const homeShowScrollCue = formData.get("homeShowScrollCue") === "on";
+  const homeShowCollections = formData.get("homeShowCollections") === "on";
+  const homeShowBestSellers = formData.get("homeShowBestSellers") === "on";
+  const homeShowFeatured = formData.get("homeShowFeatured") === "on";
+  const homeShowShopCta = formData.get("homeShowShopCta") === "on";
+
   if (!siteName) {
     return { ok: false, message: "Site name is required." };
   }
@@ -274,6 +282,13 @@ export async function updateSiteSetting(formData: FormData): Promise<UpdateSiteS
       paymentShowAmex,
       paymentShowPingpong,
       paymentShowPayoneer,
+      homeShowTrustStrip,
+      homeShowAmbient,
+      homeShowScrollCue,
+      homeShowCollections,
+      homeShowBestSellers,
+      homeShowFeatured,
+      homeShowShopCta,
     },
     update: {
       siteName,
@@ -334,6 +349,13 @@ export async function updateSiteSetting(formData: FormData): Promise<UpdateSiteS
       paymentShowAmex,
       paymentShowPingpong,
       paymentShowPayoneer,
+      homeShowTrustStrip,
+      homeShowAmbient,
+      homeShowScrollCue,
+      homeShowCollections,
+      homeShowBestSellers,
+      homeShowFeatured,
+      homeShowShopCta,
     },
   });
 

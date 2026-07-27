@@ -38,6 +38,13 @@ const emptyAboutContact = {
   paymentShowAmex: true,
   paymentShowPingpong: false,
   paymentShowPayoneer: false,
+  homeShowTrustStrip: true,
+  homeShowAmbient: true,
+  homeShowScrollCue: true,
+  homeShowCollections: true,
+  homeShowBestSellers: true,
+  homeShowFeatured: true,
+  homeShowShopCta: true,
 };
 
 const defaults = {
@@ -132,6 +139,13 @@ export default async function AdminSettingsPage() {
         paymentShowAmex: row.paymentShowAmex,
         paymentShowPingpong: row.paymentShowPingpong,
         paymentShowPayoneer: row.paymentShowPayoneer,
+        homeShowTrustStrip: row.homeShowTrustStrip,
+        homeShowAmbient: row.homeShowAmbient,
+        homeShowScrollCue: row.homeShowScrollCue,
+        homeShowCollections: row.homeShowCollections,
+        homeShowBestSellers: row.homeShowBestSellers,
+        homeShowFeatured: row.homeShowFeatured,
+        homeShowShopCta: row.homeShowShopCta,
       }
     : defaults;
 

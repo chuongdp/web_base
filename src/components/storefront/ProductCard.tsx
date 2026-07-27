@@ -13,6 +13,8 @@ export type ProductCardProps = {
   /** Nếu có, cả thẻ là link (vd: trang chi tiết sau này). */
   href?: string;
   className?: string;
+  /** Zoom ảnh nhẹ khi hover (home / editorial grids). */
+  imageHoverZoom?: boolean;
 };
 
 export function ProductCard({
@@ -22,6 +24,7 @@ export function ProductCard({
   href,
   currency = "USD",
   className = "",
+  imageHoverZoom = false,
 }: ProductCardProps) {
   const priceEl = (
     <p className="mt-1 text-sm font-semibold tabular-nums" style={{ color: "var(--sf-primary)" }}>
@@ -30,13 +33,15 @@ export function ProductCard({
   );
 
   const media = (
-    <div className="relative aspect-[3/4] w-full overflow-hidden bg-zinc-100">
+    <div
+      className={`relative aspect-[3/4] w-full overflow-hidden bg-zinc-100 ${imageHoverZoom ? "sf-card-shine" : ""}`}
+    >
       {imageUrl ? (
         <Image
           src={imageUrl}
           alt={name}
           fill
-          className="object-cover"
+          className={`object-cover ${imageHoverZoom ? "transition-transform duration-700 ease-out group-hover/card:scale-[1.04]" : ""}`}
           sizes="(max-width: 768px) 50vw, 33vw"
           unoptimized={imageUrl.startsWith("/")}
         />
@@ -58,11 +63,11 @@ export function ProductCard({
     </>
   );
 
-  const shell = `sf-product-card overflow-hidden border border-zinc-200 bg-white transition-shadow ${className}`;
+  const shell = `sf-product-card overflow-hidden border border-zinc-200 bg-white transition-[box-shadow,transform] duration-300 ${imageHoverZoom ? "hover:-translate-y-0.5" : ""} ${className}`;
 
   if (href) {
     return (
-      <Link href={href} className={`block ${shell}`}>
+      <Link href={href} className={`group/card block ${shell}`}>
         {body}
       </Link>
     );

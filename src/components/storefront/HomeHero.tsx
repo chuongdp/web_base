@@ -1,5 +1,5 @@
 import type { StorefrontTheme } from "@prisma/client";
-import type { CSSProperties } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { getHeroLayoutMode } from "@/lib/storefront-theme";
@@ -40,18 +40,64 @@ function HeroCta({
   buttonText: string;
   className?: string;
 }) {
-  if (!showCta) return null;
   return (
-    <div className={className}>
+    <div className={`flex flex-wrap items-center gap-3 sm:gap-4 ${className ?? ""}`}>
+      {showCta ? (
+        <Link
+          href={buttonHref}
+          className="inline-flex min-h-[48px] items-center justify-center rounded-[var(--sf-card-radius)] px-8 py-3 text-sm font-semibold tracking-wide text-white shadow-sm transition hover:brightness-110 active:scale-[0.99] sf-btn-primary-glow"
+          style={{ backgroundColor: "var(--sf-primary)" }}
+        >
+          {buttonText}
+        </Link>
+      ) : null}
       <Link
-        href={buttonHref}
-        className="inline-flex min-h-[48px] items-center justify-center px-10 py-3 text-sm font-semibold uppercase tracking-wide text-white transition hover:opacity-90"
-        style={{ backgroundColor: "var(--sf-primary)" }}
+        href="/shop"
+        className="inline-flex min-h-[48px] items-center justify-center rounded-[var(--sf-card-radius)] border border-zinc-300/90 bg-white/80 px-6 py-3 text-sm font-semibold text-zinc-900 backdrop-blur-sm transition hover:border-zinc-400 hover:bg-white"
       >
-        {buttonText}
+        Browse shop
       </Link>
     </div>
   );
+}
+
+function HeroTitle({ children, className = "" }: { children: ReactNode; className?: string }) {
+  if (!children) return null;
+  return (
+    <h1
+      className={`sf-hero-title text-balance font-semibold leading-[1.08] tracking-tight text-zinc-900 ${className}`}
+    >
+      {children}
+    </h1>
+  );
+}
+
+function HeroSubtitle({ children, className = "" }: { children: ReactNode; className?: string }) {
+  if (!children) return null;
+  return <p className={`text-pretty leading-relaxed text-zinc-600 ${className}`}>{children}</p>;
+}
+
+function HeroImageGlow({ className = "" }: { className?: string }) {
+  return (
+    <div
+      className={`pointer-events-none absolute -inset-3 -z-10 rounded-[2rem] opacity-60 sm:-inset-4 ${className}`}
+      style={{
+        background:
+          "radial-gradient(ellipse at 70% 30%, color-mix(in srgb, var(--sf-primary) 18%, transparent), transparent 55%)",
+      }}
+      aria-hidden
+    />
+  );
+}
+
+function HeroMediaFrame({
+  children,
+  className = "",
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  return <div className={`sf-hero-media-shine relative overflow-hidden ${className}`}>{children}</div>;
 }
 
 export function HomeHero({
@@ -80,9 +126,9 @@ export function HomeHero({
 
   if (mode === "editorialCinematic") {
     return (
-      <section className="relative left-1/2 mb-8 w-screen max-w-[100vw] -translate-x-1/2">
+      <section className="relative left-1/2 mb-2 w-screen max-w-[100vw] -translate-x-1/2">
         <div
-          className="relative aspect-[4/5] w-full sm:aspect-[21/9] lg:aspect-[2.4/1]"
+          className="relative aspect-[4/5] w-full overflow-hidden sm:aspect-[21/9] lg:aspect-[2.4/1]"
           style={imgBox}
         >
           {mainImg ? (
@@ -98,18 +144,37 @@ export function HomeHero({
           ) : (
             <div className="absolute inset-0 bg-gradient-to-br from-stone-200 via-stone-100 to-zinc-200" />
           )}
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent sm:from-black/40" />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-black/5" />
+          <div className="absolute inset-x-0 bottom-0 hidden px-6 pb-8 pt-24 text-center lg:block lg:px-10 lg:pb-10">
+            {title ? (
+              <HeroTitle className="mx-auto max-w-4xl text-3xl text-white drop-shadow-md sm:text-5xl lg:text-6xl">
+                {title}
+              </HeroTitle>
+            ) : null}
+            {subtitle ? (
+              <HeroSubtitle className="mx-auto mt-4 max-w-xl text-base text-white/90 sm:text-lg">{subtitle}</HeroSubtitle>
+            ) : null}
+          </div>
         </div>
-        <div className="mx-auto max-w-3xl px-4 py-10 text-center sm:py-12">
-          {title ? (
-            <h1 className="sf-hero-title text-3xl font-semibold leading-tight tracking-tight text-zinc-900 sm:text-5xl lg:text-6xl">
-              {title}
-            </h1>
-          ) : null}
+        <div className="mx-auto max-w-3xl px-4 py-8 text-center sm:py-10 lg:hidden">
+          {title ? <HeroTitle className="text-3xl sm:text-4xl">{title}</HeroTitle> : null}
           {subtitle ? (
-            <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-zinc-600 sm:text-lg">{subtitle}</p>
+            <HeroSubtitle className="mx-auto mt-4 max-w-xl text-base sm:text-lg">{subtitle}</HeroSubtitle>
           ) : null}
-          <HeroCta showCta={showCta} buttonHref={buttonHref} buttonText={buttonText} className="mt-8" />
+          <HeroCta
+            showCta={showCta}
+            buttonHref={buttonHref}
+            buttonText={buttonText}
+            className="mt-8 justify-center"
+          />
+        </div>
+        <div className="mx-auto hidden max-w-3xl px-4 pb-2 text-center lg:block">
+          <HeroCta
+            showCta={showCta}
+            buttonHref={buttonHref}
+            buttonText={buttonText}
+            className="mt-2 justify-center"
+          />
         </div>
       </section>
     );
@@ -117,16 +182,10 @@ export function HomeHero({
 
   if (mode === "splitBorder") {
     return (
-      <section className="grid gap-0 overflow-hidden border border-zinc-200 lg:grid-cols-2 lg:min-h-[min(520px,70vh)]">
+      <section className="grid gap-0 overflow-hidden rounded-[var(--sf-card-radius)] border border-zinc-200/90 shadow-sm ring-1 ring-zinc-900/[0.04] lg:grid-cols-2 lg:min-h-[min(520px,70vh)]">
         <div className="order-2 flex flex-col justify-center border-t border-zinc-200 p-8 sm:p-10 lg:order-1 lg:border-r lg:border-t-0">
-          {title ? (
-            <h1 className="sf-hero-title text-3xl font-semibold leading-tight tracking-tight text-zinc-900 sm:text-4xl lg:text-5xl">
-              {title}
-            </h1>
-          ) : null}
-          {subtitle ? (
-            <p className="mt-5 max-w-md text-base leading-relaxed text-zinc-600">{subtitle}</p>
-          ) : null}
+          {title ? <HeroTitle className="text-3xl sm:text-4xl lg:text-5xl">{title}</HeroTitle> : null}
+          {subtitle ? <HeroSubtitle className="mt-5 max-w-md text-base">{subtitle}</HeroSubtitle> : null}
           <HeroCta showCta={showCta} buttonHref={buttonHref} buttonText={buttonText} className="mt-8" />
         </div>
         <div
@@ -155,7 +214,7 @@ export function HomeHero({
 
   if (mode === "splitBorderReverse") {
     return (
-      <section className="grid gap-0 overflow-hidden border-2 border-zinc-900 lg:grid-cols-2 lg:min-h-[min(520px,70vh)]">
+      <section className="grid gap-0 overflow-hidden rounded-none border-2 border-zinc-900 shadow-[6px_6px_0_0_rgb(24_24_27)] lg:grid-cols-2 lg:min-h-[min(520px,70vh)]">
         <div
           className="relative order-1 aspect-[4/3] min-h-[240px] bg-zinc-100 lg:aspect-auto lg:min-h-0"
           style={imgBox}
@@ -178,13 +237,9 @@ export function HomeHero({
         </div>
         <div className="order-2 flex flex-col justify-center border-t border-zinc-900 bg-zinc-50/90 p-8 sm:p-10 lg:border-l lg:border-t-0">
           {title ? (
-            <h1 className="sf-hero-title text-3xl font-semibold uppercase tracking-tight text-zinc-900 sm:text-4xl lg:text-5xl">
-              {title}
-            </h1>
+            <HeroTitle className="text-3xl uppercase sm:text-4xl lg:text-5xl">{title}</HeroTitle>
           ) : null}
-          {subtitle ? (
-            <p className="mt-5 max-w-md text-base leading-relaxed text-zinc-600">{subtitle}</p>
-          ) : null}
+          {subtitle ? <HeroSubtitle className="mt-5 max-w-md text-base">{subtitle}</HeroSubtitle> : null}
           <HeroCta showCta={showCta} buttonHref={buttonHref} buttonText={buttonText} className="mt-8" />
         </div>
       </section>
@@ -193,20 +248,17 @@ export function HomeHero({
 
   if (mode === "wideCopy") {
     return (
-      <section className="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-16">
-        <div className="min-w-0 flex-1">
+      <section className="flex flex-col gap-10 lg:flex-row lg:items-start lg:gap-16 xl:gap-20">
+        <div className="min-w-0 flex-1 lg:py-2">
           {title ? (
-            <h1 className="sf-hero-title text-4xl font-semibold leading-[1.1] tracking-tight text-zinc-900 sm:text-5xl lg:max-w-[22ch] lg:text-6xl">
-              {title}
-            </h1>
+            <HeroTitle className="text-4xl sm:text-5xl lg:max-w-[18ch] lg:text-6xl">{title}</HeroTitle>
           ) : null}
-          {subtitle ? (
-            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-zinc-600">{subtitle}</p>
-          ) : null}
+          {subtitle ? <HeroSubtitle className="mt-6 max-w-2xl text-lg">{subtitle}</HeroSubtitle> : null}
           <HeroCta showCta={showCta} buttonHref={buttonHref} buttonText={buttonText} className="mt-10" />
         </div>
         <div className="relative mx-auto w-full max-w-xs shrink-0 lg:mx-0 lg:mt-2" style={imgBox}>
-          <div className="relative aspect-[3/4] w-full overflow-hidden rounded-xl bg-zinc-200">
+          <HeroImageGlow />
+          <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[var(--sf-card-radius)] bg-zinc-200 shadow-lg ring-1 ring-zinc-900/10">
             {mainImg ? (
               <Image
                 src={mainImg}
@@ -247,18 +299,13 @@ export function HomeHero({
       <section className="rounded-[2rem] bg-white/90 p-6 shadow-lg ring-1 ring-amber-200/60 sm:p-10">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
           <div className="order-2 lg:order-1">
-            {title ? (
-              <h1 className="sf-hero-title mt-1 text-4xl font-semibold leading-tight tracking-tight text-zinc-900 sm:text-5xl">
-                {title}
-              </h1>
-            ) : null}
-            {subtitle ? (
-              <p className="mt-5 max-w-md text-base leading-relaxed text-zinc-600">{subtitle}</p>
-            ) : null}
+            {title ? <HeroTitle className="text-4xl sm:text-5xl">{title}</HeroTitle> : null}
+            {subtitle ? <HeroSubtitle className="mt-5 max-w-md text-base">{subtitle}</HeroSubtitle> : null}
             <HeroCta showCta={showCta} buttonHref={buttonHref} buttonText={buttonText} className="mt-8" />
           </div>
           <div className="relative order-1 lg:order-2" style={imgBox}>
-            <div className="relative mx-auto aspect-[3/4] max-h-[min(480px,65vh)] w-full max-w-md overflow-hidden rounded-[1.75rem] bg-zinc-200 shadow-inner">
+            <HeroImageGlow className="opacity-50" />
+            <div className="relative mx-auto aspect-[3/4] max-h-[min(480px,65vh)] w-full max-w-md overflow-hidden rounded-[1.75rem] bg-zinc-200 shadow-inner ring-1 ring-amber-200/50">
               {mainImg ? (
                 <Image
                   src={mainImg}
@@ -301,21 +348,16 @@ export function HomeHero({
 
   /* boutique — default */
   return (
-    <section className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
-      <div className="order-2 lg:order-1">
-        {title ? (
-          <h1 className="sf-hero-title mt-1 text-4xl font-semibold leading-tight tracking-tight text-zinc-900 sm:text-5xl lg:text-[2.75rem]">
-            {title}
-          </h1>
-        ) : null}
-        {subtitle ? (
-          <p className="mt-5 max-w-md text-base leading-relaxed text-zinc-600">{subtitle}</p>
-        ) : null}
-        <HeroCta showCta={showCta} buttonHref={buttonHref} buttonText={buttonText} className="mt-8" />
+    <section className="relative grid items-center gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-14 xl:gap-20">
+      <div className="order-2 lg:order-1 lg:py-4">
+        {title ? <HeroTitle className="text-4xl sm:text-5xl lg:text-[3.25rem]">{title}</HeroTitle> : null}
+        {subtitle ? <HeroSubtitle className="mt-6 max-w-md text-base sm:text-lg">{subtitle}</HeroSubtitle> : null}
+        <HeroCta showCta={showCta} buttonHref={buttonHref} buttonText={buttonText} className="mt-9" />
       </div>
 
       <div className="relative order-1 lg:order-2" style={imgBox}>
-        <div className="relative mx-auto aspect-[3/4] max-h-[min(520px,70vh)] w-full max-w-md overflow-hidden rounded-2xl bg-zinc-200">
+        <HeroImageGlow />
+          <HeroMediaFrame className="relative mx-auto aspect-[3/4] max-h-[min(540px,72vh)] w-full max-w-md rounded-[var(--sf-card-radius)] bg-zinc-200 shadow-[0_24px_60px_-28px_rgb(0_0_0/0.35)] ring-1 ring-zinc-900/10">
           {mainImg ? (
             <Image
               src={mainImg}
@@ -332,7 +374,7 @@ export function HomeHero({
               <span className="mt-2 text-sm text-zinc-400">Add image URL in CMS</span>
             </div>
           )}
-        </div>
+        </HeroMediaFrame>
         <div className="absolute -bottom-4 left-0 z-10 w-[42%] max-w-[180px] overflow-hidden rounded-xl border-4 border-white bg-zinc-300 shadow-lg sm:-bottom-6 sm:left-4">
           {overlayImg ? (
             <div className="relative aspect-square w-full">

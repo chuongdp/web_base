@@ -67,6 +67,13 @@ export type SiteSettingsInitial = {
   paymentShowAmex: boolean;
   paymentShowPingpong: boolean;
   paymentShowPayoneer: boolean;
+  homeShowTrustStrip: boolean;
+  homeShowAmbient: boolean;
+  homeShowScrollCue: boolean;
+  homeShowCollections: boolean;
+  homeShowBestSellers: boolean;
+  homeShowFeatured: boolean;
+  homeShowShopCta: boolean;
 };
 
 type Props = {
@@ -78,6 +85,11 @@ const SECTIONS = [
     id: "appearance" as const,
     label: "Giao diện storefront",
     description: "Preset bố cục, typography, bo góc thẻ (màu chủ đạo ở tab Chung)",
+  },
+  {
+    id: "home" as const,
+    label: "Trang chủ",
+    description: "Bật/tắt section và hiệu ứng trên homepage",
   },
   {
     id: "footer" as const,
@@ -182,7 +194,7 @@ export function SiteSettingsForm({ initial }: Props) {
           </p>
           <fieldset>
             <legend className="sr-only">Preset giao diện</legend>
-            <div className="grid gap-3 sm:grid-cols-2">
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {STOREFRONT_THEME_OPTIONS.map((opt) => (
                 <label
                   key={opt.value}
@@ -203,6 +215,37 @@ export function SiteSettingsForm({ initial }: Props) {
               ))}
             </div>
           </fieldset>
+        </div>
+
+        <div className={`space-y-4 ${sectionHidden(active, "home")}`}>
+          <p className="text-sm text-zinc-600">
+            Tắt section không xóa dữ liệu — chỉ ẩn trên trang chủ. Hero luôn hiển thị.
+          </p>
+          <ul className="grid max-w-xl gap-3 sm:grid-cols-2">
+            {(
+              [
+                ["homeShowTrustStrip", "Trust strip (3 dòng policy)", initial.homeShowTrustStrip],
+                ["homeShowAmbient", "Nền ambient + grain + scroll reveal", initial.homeShowAmbient],
+                ["homeShowScrollCue", "Nút Explore dưới hero", initial.homeShowScrollCue],
+                ["homeShowCollections", "Bộ sưu tập / danh mục", initial.homeShowCollections],
+                ["homeShowShopCta", "Khối CTA Shop giữa trang", initial.homeShowShopCta],
+                ["homeShowBestSellers", "Best Sellers", initial.homeShowBestSellers],
+                ["homeShowFeatured", "Featured products", initial.homeShowFeatured],
+              ] as const
+            ).map(([name, label, checked]) => (
+              <li key={name}>
+                <label className="flex cursor-pointer items-start gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-2.5 text-sm">
+                  <input
+                    type="checkbox"
+                    name={name}
+                    defaultChecked={checked}
+                    className="mt-0.5 h-4 w-4 rounded border-zinc-300"
+                  />
+                  <span className="text-zinc-800">{label}</span>
+                </label>
+              </li>
+            ))}
+          </ul>
         </div>
 
         {/* —— Footer meta (cards) —— */}

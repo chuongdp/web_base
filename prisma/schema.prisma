@@ -93,6 +93,11 @@ enum StorefrontTheme {
   runway
   streetwear
   atelier
+  noir
+  coastal
+  heritage
+  gallery
+  neon
 }
 
 model Product {
@@ -269,6 +274,15 @@ model SiteSetting {
   /// Để trống có thể fallback email trang Liên hệ (nếu có)
   footerMetaEmail     String? @map("footer_meta_email")
   footerMetaHours     String? @map("footer_meta_hours")
+
+  /// Trang chủ — bật/tắt khối & hiệu ứng (CMS)
+  homeShowTrustStrip    Boolean @default(true) @map("home_show_trust_strip")
+  homeShowAmbient       Boolean @default(true) @map("home_show_ambient")
+  homeShowScrollCue     Boolean @default(true) @map("home_show_scroll_cue")
+  homeShowCollections   Boolean @default(true) @map("home_show_collections")
+  homeShowBestSellers   Boolean @default(true) @map("home_show_best_sellers")
+  homeShowFeatured      Boolean @default(true) @map("home_show_featured")
+  homeShowShopCta       Boolean @default(true) @map("home_show_shop_cta")
 
   createdAt        DateTime @default(now()) @map("created_at")
   updatedAt        DateTime @updatedAt @map("updated_at")
